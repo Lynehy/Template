@@ -1,0 +1,27 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Build",
+			"type": "shell",
+			"command": "make",
+			"args": [
+				"-j4"
+			],
+			"problemMatcher": "$gcc",
+			"group": "build"
+		},
+		{
+			"label": "Download",
+			"type": "shell",
+			"command": "openOCD",
+			"args": [
+				"-f",
+				"daplink.cfg"
+			],
+			"problemMatcher": "$gcc",
+			"group": "build",
+			"dependsOn": "Build"
+		}
+	]
+}

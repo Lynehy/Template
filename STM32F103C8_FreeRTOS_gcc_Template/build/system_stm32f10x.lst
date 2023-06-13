@@ -1,0 +1,1748 @@
+ARM GAS  C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"system_stm32f10x.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.SetSysClockTo72,"ax",%progbits
+  18              		.align	1
+  19              		.syntax unified
+  20              		.thumb
+  21              		.thumb_func
+  23              	SetSysClockTo72:
+  24              	.LFB32:
+  25              		.file 1 "Drivers/CMSIS/Source/system_stm32f10x.c"
+   1:Drivers/CMSIS/Source/system_stm32f10x.c **** /**
+   2:Drivers/CMSIS/Source/system_stm32f10x.c ****   ******************************************************************************
+   3:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @file    system_stm32f10x.c
+   4:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @author  MCD Application Team
+   5:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @version V3.5.1
+   6:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @date    08-September-2021
+   7:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @brief   CMSIS Cortex-M3 Device Peripheral Access Layer System Source File.
+   8:Drivers/CMSIS/Source/system_stm32f10x.c ****   * 
+   9:Drivers/CMSIS/Source/system_stm32f10x.c ****   * 1.  This file provides two functions and one global variable to be called from 
+  10:Drivers/CMSIS/Source/system_stm32f10x.c ****   *     user application:
+  11:Drivers/CMSIS/Source/system_stm32f10x.c ****   *      - SystemInit(): Setups the system clock (System clock source, PLL Multiplier
+  12:Drivers/CMSIS/Source/system_stm32f10x.c ****   *                      factors, AHB/APBx prescalers and Flash settings). 
+  13:Drivers/CMSIS/Source/system_stm32f10x.c ****   *                      This function is called at startup just after reset and 
+  14:Drivers/CMSIS/Source/system_stm32f10x.c ****   *                      before branch to main program. This call is made inside
+  15:Drivers/CMSIS/Source/system_stm32f10x.c ****   *                      the "startup_stm32f10x_xx.s" file.
+  16:Drivers/CMSIS/Source/system_stm32f10x.c ****   *
+  17:Drivers/CMSIS/Source/system_stm32f10x.c ****   *      - SystemCoreClock variable: Contains the core clock (HCLK), it can be used
+  18:Drivers/CMSIS/Source/system_stm32f10x.c ****   *                                  by the user application to setup the SysTick 
+  19:Drivers/CMSIS/Source/system_stm32f10x.c ****   *                                  timer or configure other parameters.
+  20:Drivers/CMSIS/Source/system_stm32f10x.c ****   *                                     
+  21:Drivers/CMSIS/Source/system_stm32f10x.c ****   *      - SystemCoreClockUpdate(): Updates the variable SystemCoreClock and must
+  22:Drivers/CMSIS/Source/system_stm32f10x.c ****   *                                 be called whenever the core clock is changed
+  23:Drivers/CMSIS/Source/system_stm32f10x.c ****   *                                 during program execution.
+  24:Drivers/CMSIS/Source/system_stm32f10x.c ****   *
+  25:Drivers/CMSIS/Source/system_stm32f10x.c ****   * 2. After each device reset the HSI (8 MHz) is used as system clock source.
+  26:Drivers/CMSIS/Source/system_stm32f10x.c ****   *    Then SystemInit() function is called, in "startup_stm32f10x_xx.s" file, to
+  27:Drivers/CMSIS/Source/system_stm32f10x.c ****   *    configure the system clock before to branch to main program.
+  28:Drivers/CMSIS/Source/system_stm32f10x.c ****   *
+  29:Drivers/CMSIS/Source/system_stm32f10x.c ****   * 3. If the system clock source selected by user fails to startup, the SystemInit()
+  30:Drivers/CMSIS/Source/system_stm32f10x.c ****   *    function will do nothing and HSI still used as system clock source. User can 
+  31:Drivers/CMSIS/Source/system_stm32f10x.c ****   *    add some code to deal with this issue inside the SetSysClock() function.
+  32:Drivers/CMSIS/Source/system_stm32f10x.c ****   *
+  33:Drivers/CMSIS/Source/system_stm32f10x.c ****   * 4. The default value of HSE crystal is set to 8 MHz (or 25 MHz, depedning on
+ARM GAS  C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s 			page 2
+
+
+  34:Drivers/CMSIS/Source/system_stm32f10x.c ****   *    the product used), refer to "HSE_VALUE" define in "stm32f10x.h" file. 
+  35:Drivers/CMSIS/Source/system_stm32f10x.c ****   *    When HSE is used as system clock source, directly or through PLL, and you
+  36:Drivers/CMSIS/Source/system_stm32f10x.c ****   *    are using different crystal you have to adapt the HSE value to your own
+  37:Drivers/CMSIS/Source/system_stm32f10x.c ****   *    configuration.
+  38:Drivers/CMSIS/Source/system_stm32f10x.c ****   *        
+  39:Drivers/CMSIS/Source/system_stm32f10x.c ****   ******************************************************************************
+  40:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @attention
+  41:Drivers/CMSIS/Source/system_stm32f10x.c ****   *
+  42:Drivers/CMSIS/Source/system_stm32f10x.c ****   * Copyright (c) 2011 STMicroelectronics.
+  43:Drivers/CMSIS/Source/system_stm32f10x.c ****   * All rights reserved.
+  44:Drivers/CMSIS/Source/system_stm32f10x.c ****   *
+  45:Drivers/CMSIS/Source/system_stm32f10x.c ****   * This software is licensed under terms that can be found in the LICENSE file
+  46:Drivers/CMSIS/Source/system_stm32f10x.c ****   * in the root directory of this software component.
+  47:Drivers/CMSIS/Source/system_stm32f10x.c ****   * If no LICENSE file comes with this software, it is provided AS-IS.
+  48:Drivers/CMSIS/Source/system_stm32f10x.c ****   *
+  49:Drivers/CMSIS/Source/system_stm32f10x.c ****   ******************************************************************************
+  50:Drivers/CMSIS/Source/system_stm32f10x.c ****   */
+  51:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+  52:Drivers/CMSIS/Source/system_stm32f10x.c **** /** @addtogroup CMSIS
+  53:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @{
+  54:Drivers/CMSIS/Source/system_stm32f10x.c ****   */
+  55:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+  56:Drivers/CMSIS/Source/system_stm32f10x.c **** /** @addtogroup stm32f10x_system
+  57:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @{
+  58:Drivers/CMSIS/Source/system_stm32f10x.c ****   */  
+  59:Drivers/CMSIS/Source/system_stm32f10x.c ****   
+  60:Drivers/CMSIS/Source/system_stm32f10x.c **** /** @addtogroup STM32F10x_System_Private_Includes
+  61:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @{
+  62:Drivers/CMSIS/Source/system_stm32f10x.c ****   */
+  63:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+  64:Drivers/CMSIS/Source/system_stm32f10x.c **** #include "stm32f10x.h"
+  65:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+  66:Drivers/CMSIS/Source/system_stm32f10x.c **** /**
+  67:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @}
+  68:Drivers/CMSIS/Source/system_stm32f10x.c ****   */
+  69:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+  70:Drivers/CMSIS/Source/system_stm32f10x.c **** /** @addtogroup STM32F10x_System_Private_TypesDefinitions
+  71:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @{
+  72:Drivers/CMSIS/Source/system_stm32f10x.c ****   */
+  73:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+  74:Drivers/CMSIS/Source/system_stm32f10x.c **** /**
+  75:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @}
+  76:Drivers/CMSIS/Source/system_stm32f10x.c ****   */
+  77:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+  78:Drivers/CMSIS/Source/system_stm32f10x.c **** /** @addtogroup STM32F10x_System_Private_Defines
+  79:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @{
+  80:Drivers/CMSIS/Source/system_stm32f10x.c ****   */
+  81:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+  82:Drivers/CMSIS/Source/system_stm32f10x.c **** /*!< Uncomment the line corresponding to the desired System clock (SYSCLK)
+  83:Drivers/CMSIS/Source/system_stm32f10x.c ****    frequency (after reset the HSI is used as SYSCLK source)
+  84:Drivers/CMSIS/Source/system_stm32f10x.c ****    
+  85:Drivers/CMSIS/Source/system_stm32f10x.c ****    IMPORTANT NOTE:
+  86:Drivers/CMSIS/Source/system_stm32f10x.c ****    ============== 
+  87:Drivers/CMSIS/Source/system_stm32f10x.c ****    1. After each device reset the HSI is used as System clock source.
+  88:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+  89:Drivers/CMSIS/Source/system_stm32f10x.c ****    2. Please make sure that the selected System clock doesn't exceed your device's
+  90:Drivers/CMSIS/Source/system_stm32f10x.c ****       maximum frequency.
+ARM GAS  C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s 			page 3
+
+
+  91:Drivers/CMSIS/Source/system_stm32f10x.c ****       
+  92:Drivers/CMSIS/Source/system_stm32f10x.c ****    3. If none of the define below is enabled, the HSI is used as System clock
+  93:Drivers/CMSIS/Source/system_stm32f10x.c ****     source.
+  94:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+  95:Drivers/CMSIS/Source/system_stm32f10x.c ****    4. The System clock configuration functions provided within this file assume that:
+  96:Drivers/CMSIS/Source/system_stm32f10x.c ****         - For Low, Medium and High density Value line devices an external 8MHz 
+  97:Drivers/CMSIS/Source/system_stm32f10x.c ****           crystal is used to drive the System clock.
+  98:Drivers/CMSIS/Source/system_stm32f10x.c ****         - For Low, Medium and High density devices an external 8MHz crystal is
+  99:Drivers/CMSIS/Source/system_stm32f10x.c ****           used to drive the System clock.
+ 100:Drivers/CMSIS/Source/system_stm32f10x.c ****         - For Connectivity line devices an external 25MHz crystal is used to drive
+ 101:Drivers/CMSIS/Source/system_stm32f10x.c ****           the System clock.
+ 102:Drivers/CMSIS/Source/system_stm32f10x.c ****      If you are using different crystal you have to adapt those functions accordingly.
+ 103:Drivers/CMSIS/Source/system_stm32f10x.c ****     */
+ 104:Drivers/CMSIS/Source/system_stm32f10x.c ****     
+ 105:Drivers/CMSIS/Source/system_stm32f10x.c **** #if defined (STM32F10X_LD_VL) || (defined STM32F10X_MD_VL) || (defined STM32F10X_HD_VL)
+ 106:Drivers/CMSIS/Source/system_stm32f10x.c **** /* #define SYSCLK_FREQ_HSE    HSE_VALUE */
+ 107:Drivers/CMSIS/Source/system_stm32f10x.c ****  #define SYSCLK_FREQ_24MHz  24000000
+ 108:Drivers/CMSIS/Source/system_stm32f10x.c **** #else
+ 109:Drivers/CMSIS/Source/system_stm32f10x.c **** /* #define SYSCLK_FREQ_HSE    HSE_VALUE */
+ 110:Drivers/CMSIS/Source/system_stm32f10x.c **** /* #define SYSCLK_FREQ_24MHz  24000000 */ 
+ 111:Drivers/CMSIS/Source/system_stm32f10x.c **** /* #define SYSCLK_FREQ_36MHz  36000000 */
+ 112:Drivers/CMSIS/Source/system_stm32f10x.c **** /* #define SYSCLK_FREQ_48MHz  48000000 */
+ 113:Drivers/CMSIS/Source/system_stm32f10x.c **** /* #define SYSCLK_FREQ_56MHz  56000000 */
+ 114:Drivers/CMSIS/Source/system_stm32f10x.c **** #define SYSCLK_FREQ_72MHz  72000000
+ 115:Drivers/CMSIS/Source/system_stm32f10x.c **** #endif
+ 116:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 117:Drivers/CMSIS/Source/system_stm32f10x.c **** /*!< Uncomment the following line if you need to use external SRAM mounted
+ 118:Drivers/CMSIS/Source/system_stm32f10x.c ****      on STM3210E-EVAL board (STM32 High density and XL-density devices) or on 
+ 119:Drivers/CMSIS/Source/system_stm32f10x.c ****      STM32100E-EVAL board (STM32 High-density value line devices) as data memory */ 
+ 120:Drivers/CMSIS/Source/system_stm32f10x.c **** #if defined (STM32F10X_HD) || (defined STM32F10X_XL) || (defined STM32F10X_HD_VL)
+ 121:Drivers/CMSIS/Source/system_stm32f10x.c **** /* #define DATA_IN_ExtSRAM */
+ 122:Drivers/CMSIS/Source/system_stm32f10x.c **** #endif
+ 123:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 124:Drivers/CMSIS/Source/system_stm32f10x.c **** /*!< Uncomment the following line if you need to relocate your vector Table in
+ 125:Drivers/CMSIS/Source/system_stm32f10x.c ****      Internal SRAM. */ 
+ 126:Drivers/CMSIS/Source/system_stm32f10x.c **** /* #define VECT_TAB_SRAM */
+ 127:Drivers/CMSIS/Source/system_stm32f10x.c **** #define VECT_TAB_OFFSET  0x0 /*!< Vector Table base offset field. 
+ 128:Drivers/CMSIS/Source/system_stm32f10x.c ****                                   This value must be a multiple of 0x200. */
+ 129:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 130:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 131:Drivers/CMSIS/Source/system_stm32f10x.c **** /**
+ 132:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @}
+ 133:Drivers/CMSIS/Source/system_stm32f10x.c ****   */
+ 134:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 135:Drivers/CMSIS/Source/system_stm32f10x.c **** /** @addtogroup STM32F10x_System_Private_Macros
+ 136:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @{
+ 137:Drivers/CMSIS/Source/system_stm32f10x.c ****   */
+ 138:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 139:Drivers/CMSIS/Source/system_stm32f10x.c **** /**
+ 140:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @}
+ 141:Drivers/CMSIS/Source/system_stm32f10x.c ****   */
+ 142:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 143:Drivers/CMSIS/Source/system_stm32f10x.c **** /** @addtogroup STM32F10x_System_Private_Variables
+ 144:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @{
+ 145:Drivers/CMSIS/Source/system_stm32f10x.c ****   */
+ 146:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 147:Drivers/CMSIS/Source/system_stm32f10x.c **** /*******************************************************************************
+ARM GAS  C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s 			page 4
+
+
+ 148:Drivers/CMSIS/Source/system_stm32f10x.c **** *  Clock Definitions
+ 149:Drivers/CMSIS/Source/system_stm32f10x.c **** *******************************************************************************/
+ 150:Drivers/CMSIS/Source/system_stm32f10x.c **** #ifdef SYSCLK_FREQ_HSE
+ 151:Drivers/CMSIS/Source/system_stm32f10x.c ****   uint32_t SystemCoreClock         = SYSCLK_FREQ_HSE;        /*!< System Clock Frequency (Core Cloc
+ 152:Drivers/CMSIS/Source/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_24MHz
+ 153:Drivers/CMSIS/Source/system_stm32f10x.c ****   uint32_t SystemCoreClock         = SYSCLK_FREQ_24MHz;        /*!< System Clock Frequency (Core Cl
+ 154:Drivers/CMSIS/Source/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_36MHz
+ 155:Drivers/CMSIS/Source/system_stm32f10x.c ****   uint32_t SystemCoreClock         = SYSCLK_FREQ_36MHz;        /*!< System Clock Frequency (Core Cl
+ 156:Drivers/CMSIS/Source/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_48MHz
+ 157:Drivers/CMSIS/Source/system_stm32f10x.c ****   uint32_t SystemCoreClock         = SYSCLK_FREQ_48MHz;        /*!< System Clock Frequency (Core Cl
+ 158:Drivers/CMSIS/Source/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_56MHz
+ 159:Drivers/CMSIS/Source/system_stm32f10x.c ****   uint32_t SystemCoreClock         = SYSCLK_FREQ_56MHz;        /*!< System Clock Frequency (Core Cl
+ 160:Drivers/CMSIS/Source/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_72MHz
+ 161:Drivers/CMSIS/Source/system_stm32f10x.c ****   uint32_t SystemCoreClock         = SYSCLK_FREQ_72MHz;        /*!< System Clock Frequency (Core Cl
+ 162:Drivers/CMSIS/Source/system_stm32f10x.c **** #else /*!< HSI Selected as System Clock source */
+ 163:Drivers/CMSIS/Source/system_stm32f10x.c ****   uint32_t SystemCoreClock         = HSI_VALUE;        /*!< System Clock Frequency (Core Clock) */
+ 164:Drivers/CMSIS/Source/system_stm32f10x.c **** #endif
+ 165:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 166:Drivers/CMSIS/Source/system_stm32f10x.c **** __I uint8_t AHBPrescTable[16] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 6, 7, 8, 9};
+ 167:Drivers/CMSIS/Source/system_stm32f10x.c **** /**
+ 168:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @}
+ 169:Drivers/CMSIS/Source/system_stm32f10x.c ****   */
+ 170:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 171:Drivers/CMSIS/Source/system_stm32f10x.c **** /** @addtogroup STM32F10x_System_Private_FunctionPrototypes
+ 172:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @{
+ 173:Drivers/CMSIS/Source/system_stm32f10x.c ****   */
+ 174:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 175:Drivers/CMSIS/Source/system_stm32f10x.c **** static void SetSysClock(void);
+ 176:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 177:Drivers/CMSIS/Source/system_stm32f10x.c **** #ifdef SYSCLK_FREQ_HSE
+ 178:Drivers/CMSIS/Source/system_stm32f10x.c ****   static void SetSysClockToHSE(void);
+ 179:Drivers/CMSIS/Source/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_24MHz
+ 180:Drivers/CMSIS/Source/system_stm32f10x.c ****   static void SetSysClockTo24(void);
+ 181:Drivers/CMSIS/Source/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_36MHz
+ 182:Drivers/CMSIS/Source/system_stm32f10x.c ****   static void SetSysClockTo36(void);
+ 183:Drivers/CMSIS/Source/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_48MHz
+ 184:Drivers/CMSIS/Source/system_stm32f10x.c ****   static void SetSysClockTo48(void);
+ 185:Drivers/CMSIS/Source/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_56MHz
+ 186:Drivers/CMSIS/Source/system_stm32f10x.c ****   static void SetSysClockTo56(void);  
+ 187:Drivers/CMSIS/Source/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_72MHz
+ 188:Drivers/CMSIS/Source/system_stm32f10x.c ****   static void SetSysClockTo72(void);
+ 189:Drivers/CMSIS/Source/system_stm32f10x.c **** #endif
+ 190:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 191:Drivers/CMSIS/Source/system_stm32f10x.c **** #ifdef DATA_IN_ExtSRAM
+ 192:Drivers/CMSIS/Source/system_stm32f10x.c ****   static void SystemInit_ExtMemCtl(void); 
+ 193:Drivers/CMSIS/Source/system_stm32f10x.c **** #endif /* DATA_IN_ExtSRAM */
+ 194:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 195:Drivers/CMSIS/Source/system_stm32f10x.c **** /**
+ 196:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @}
+ 197:Drivers/CMSIS/Source/system_stm32f10x.c ****   */
+ 198:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 199:Drivers/CMSIS/Source/system_stm32f10x.c **** /** @addtogroup STM32F10x_System_Private_Functions
+ 200:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @{
+ 201:Drivers/CMSIS/Source/system_stm32f10x.c ****   */
+ 202:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 203:Drivers/CMSIS/Source/system_stm32f10x.c **** /**
+ 204:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @brief  Setup the microcontroller system
+ARM GAS  C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s 			page 5
+
+
+ 205:Drivers/CMSIS/Source/system_stm32f10x.c ****   *         Initialize the Embedded Flash Interface, the PLL and update the 
+ 206:Drivers/CMSIS/Source/system_stm32f10x.c ****   *         SystemCoreClock variable.
+ 207:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @note   This function should be used only after reset.
+ 208:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @param  None
+ 209:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @retval None
+ 210:Drivers/CMSIS/Source/system_stm32f10x.c ****   */
+ 211:Drivers/CMSIS/Source/system_stm32f10x.c **** void SystemInit (void)
+ 212:Drivers/CMSIS/Source/system_stm32f10x.c **** {
+ 213:Drivers/CMSIS/Source/system_stm32f10x.c ****   /* Reset the RCC clock configuration to the default reset state(for debug purpose) */
+ 214:Drivers/CMSIS/Source/system_stm32f10x.c ****   /* Set HSION bit */
+ 215:Drivers/CMSIS/Source/system_stm32f10x.c ****   RCC->CR |= (uint32_t)0x00000001;
+ 216:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 217:Drivers/CMSIS/Source/system_stm32f10x.c ****   /* Reset SW, HPRE, PPRE1, PPRE2, ADCPRE and MCO bits */
+ 218:Drivers/CMSIS/Source/system_stm32f10x.c **** #ifndef STM32F10X_CL
+ 219:Drivers/CMSIS/Source/system_stm32f10x.c ****   RCC->CFGR &= (uint32_t)0xF8FF0000;
+ 220:Drivers/CMSIS/Source/system_stm32f10x.c **** #else
+ 221:Drivers/CMSIS/Source/system_stm32f10x.c ****   RCC->CFGR &= (uint32_t)0xF0FF0000;
+ 222:Drivers/CMSIS/Source/system_stm32f10x.c **** #endif /* STM32F10X_CL */   
+ 223:Drivers/CMSIS/Source/system_stm32f10x.c ****   
+ 224:Drivers/CMSIS/Source/system_stm32f10x.c ****   /* Reset HSEON, CSSON and PLLON bits */
+ 225:Drivers/CMSIS/Source/system_stm32f10x.c ****   RCC->CR &= (uint32_t)0xFEF6FFFF;
+ 226:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 227:Drivers/CMSIS/Source/system_stm32f10x.c ****   /* Reset HSEBYP bit */
+ 228:Drivers/CMSIS/Source/system_stm32f10x.c ****   RCC->CR &= (uint32_t)0xFFFBFFFF;
+ 229:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 230:Drivers/CMSIS/Source/system_stm32f10x.c ****   /* Reset PLLSRC, PLLXTPRE, PLLMUL and USBPRE/OTGFSPRE bits */
+ 231:Drivers/CMSIS/Source/system_stm32f10x.c ****   RCC->CFGR &= (uint32_t)0xFF80FFFF;
+ 232:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 233:Drivers/CMSIS/Source/system_stm32f10x.c **** #ifdef STM32F10X_CL
+ 234:Drivers/CMSIS/Source/system_stm32f10x.c ****   /* Reset PLL2ON and PLL3ON bits */
+ 235:Drivers/CMSIS/Source/system_stm32f10x.c ****   RCC->CR &= (uint32_t)0xEBFFFFFF;
+ 236:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 237:Drivers/CMSIS/Source/system_stm32f10x.c ****   /* Disable all interrupts and clear pending bits  */
+ 238:Drivers/CMSIS/Source/system_stm32f10x.c ****   RCC->CIR = 0x00FF0000;
+ 239:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 240:Drivers/CMSIS/Source/system_stm32f10x.c ****   /* Reset CFGR2 register */
+ 241:Drivers/CMSIS/Source/system_stm32f10x.c ****   RCC->CFGR2 = 0x00000000;
+ 242:Drivers/CMSIS/Source/system_stm32f10x.c **** #elif defined (STM32F10X_LD_VL) || defined (STM32F10X_MD_VL) || (defined STM32F10X_HD_VL)
+ 243:Drivers/CMSIS/Source/system_stm32f10x.c ****   /* Disable all interrupts and clear pending bits  */
+ 244:Drivers/CMSIS/Source/system_stm32f10x.c ****   RCC->CIR = 0x009F0000;
+ 245:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 246:Drivers/CMSIS/Source/system_stm32f10x.c ****   /* Reset CFGR2 register */
+ 247:Drivers/CMSIS/Source/system_stm32f10x.c ****   RCC->CFGR2 = 0x00000000;      
+ 248:Drivers/CMSIS/Source/system_stm32f10x.c **** #else
+ 249:Drivers/CMSIS/Source/system_stm32f10x.c ****   /* Disable all interrupts and clear pending bits  */
+ 250:Drivers/CMSIS/Source/system_stm32f10x.c ****   RCC->CIR = 0x009F0000;
+ 251:Drivers/CMSIS/Source/system_stm32f10x.c **** #endif /* STM32F10X_CL */
+ 252:Drivers/CMSIS/Source/system_stm32f10x.c ****     
+ 253:Drivers/CMSIS/Source/system_stm32f10x.c **** #if defined (STM32F10X_HD) || (defined STM32F10X_XL) || (defined STM32F10X_HD_VL)
+ 254:Drivers/CMSIS/Source/system_stm32f10x.c ****   #ifdef DATA_IN_ExtSRAM
+ 255:Drivers/CMSIS/Source/system_stm32f10x.c ****     SystemInit_ExtMemCtl(); 
+ 256:Drivers/CMSIS/Source/system_stm32f10x.c ****   #endif /* DATA_IN_ExtSRAM */
+ 257:Drivers/CMSIS/Source/system_stm32f10x.c **** #endif 
+ 258:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 259:Drivers/CMSIS/Source/system_stm32f10x.c ****   /* Configure the System clock frequency, HCLK, PCLK2 and PCLK1 prescalers */
+ 260:Drivers/CMSIS/Source/system_stm32f10x.c ****   /* Configure the Flash Latency cycles and enable prefetch buffer */
+ 261:Drivers/CMSIS/Source/system_stm32f10x.c ****   SetSysClock();
+ARM GAS  C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s 			page 6
+
+
+ 262:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 263:Drivers/CMSIS/Source/system_stm32f10x.c **** #ifdef VECT_TAB_SRAM
+ 264:Drivers/CMSIS/Source/system_stm32f10x.c ****   SCB->VTOR = SRAM_BASE | VECT_TAB_OFFSET; /* Vector Table Relocation in Internal SRAM. */
+ 265:Drivers/CMSIS/Source/system_stm32f10x.c **** #else
+ 266:Drivers/CMSIS/Source/system_stm32f10x.c ****   SCB->VTOR = FLASH_BASE | VECT_TAB_OFFSET; /* Vector Table Relocation in Internal FLASH. */
+ 267:Drivers/CMSIS/Source/system_stm32f10x.c **** #endif 
+ 268:Drivers/CMSIS/Source/system_stm32f10x.c **** }
+ 269:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 270:Drivers/CMSIS/Source/system_stm32f10x.c **** /**
+ 271:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @brief  Update SystemCoreClock variable according to Clock Register Values.
+ 272:Drivers/CMSIS/Source/system_stm32f10x.c ****   *         The SystemCoreClock variable contains the core clock (HCLK), it can
+ 273:Drivers/CMSIS/Source/system_stm32f10x.c ****   *         be used by the user application to setup the SysTick timer or configure
+ 274:Drivers/CMSIS/Source/system_stm32f10x.c ****   *         other parameters.
+ 275:Drivers/CMSIS/Source/system_stm32f10x.c ****   *           
+ 276:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @note   Each time the core clock (HCLK) changes, this function must be called
+ 277:Drivers/CMSIS/Source/system_stm32f10x.c ****   *         to update SystemCoreClock variable value. Otherwise, any configuration
+ 278:Drivers/CMSIS/Source/system_stm32f10x.c ****   *         based on this variable will be incorrect.         
+ 279:Drivers/CMSIS/Source/system_stm32f10x.c ****   *     
+ 280:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @note   - The system frequency computed by this function is not the real 
+ 281:Drivers/CMSIS/Source/system_stm32f10x.c ****   *           frequency in the chip. It is calculated based on the predefined 
+ 282:Drivers/CMSIS/Source/system_stm32f10x.c ****   *           constant and the selected clock source:
+ 283:Drivers/CMSIS/Source/system_stm32f10x.c ****   *             
+ 284:Drivers/CMSIS/Source/system_stm32f10x.c ****   *           - If SYSCLK source is HSI, SystemCoreClock will contain the HSI_VALUE(*)
+ 285:Drivers/CMSIS/Source/system_stm32f10x.c ****   *                                              
+ 286:Drivers/CMSIS/Source/system_stm32f10x.c ****   *           - If SYSCLK source is HSE, SystemCoreClock will contain the HSE_VALUE(**)
+ 287:Drivers/CMSIS/Source/system_stm32f10x.c ****   *                          
+ 288:Drivers/CMSIS/Source/system_stm32f10x.c ****   *           - If SYSCLK source is PLL, SystemCoreClock will contain the HSE_VALUE(**) 
+ 289:Drivers/CMSIS/Source/system_stm32f10x.c ****   *             or HSI_VALUE(*) multiplied by the PLL factors.
+ 290:Drivers/CMSIS/Source/system_stm32f10x.c ****   *         
+ 291:Drivers/CMSIS/Source/system_stm32f10x.c ****   *         (*) HSI_VALUE is a constant defined in stm32f1xx.h file (default value
+ 292:Drivers/CMSIS/Source/system_stm32f10x.c ****   *             8 MHz) but the real value may vary depending on the variations
+ 293:Drivers/CMSIS/Source/system_stm32f10x.c ****   *             in voltage and temperature.   
+ 294:Drivers/CMSIS/Source/system_stm32f10x.c ****   *    
+ 295:Drivers/CMSIS/Source/system_stm32f10x.c ****   *         (**) HSE_VALUE is a constant defined in stm32f1xx.h file (default value
+ 296:Drivers/CMSIS/Source/system_stm32f10x.c ****   *              8 MHz or 25 MHz, depending on the product used), user has to ensure
+ 297:Drivers/CMSIS/Source/system_stm32f10x.c ****   *              that HSE_VALUE is same as the real frequency of the crystal used.
+ 298:Drivers/CMSIS/Source/system_stm32f10x.c ****   *              Otherwise, this function may have wrong result.
+ 299:Drivers/CMSIS/Source/system_stm32f10x.c ****   *                
+ 300:Drivers/CMSIS/Source/system_stm32f10x.c ****   *         - The result of this function could be not correct when using fractional
+ 301:Drivers/CMSIS/Source/system_stm32f10x.c ****   *           value for HSE crystal.
+ 302:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @param  None
+ 303:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @retval None
+ 304:Drivers/CMSIS/Source/system_stm32f10x.c ****   */
+ 305:Drivers/CMSIS/Source/system_stm32f10x.c **** void SystemCoreClockUpdate (void)
+ 306:Drivers/CMSIS/Source/system_stm32f10x.c **** {
+ 307:Drivers/CMSIS/Source/system_stm32f10x.c ****   uint32_t tmp = 0, pllmull = 0, pllsource = 0;
+ 308:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 309:Drivers/CMSIS/Source/system_stm32f10x.c **** #ifdef  STM32F10X_CL
+ 310:Drivers/CMSIS/Source/system_stm32f10x.c ****   uint32_t prediv1source = 0, prediv1factor = 0, prediv2factor = 0, pll2mull = 0;
+ 311:Drivers/CMSIS/Source/system_stm32f10x.c **** #endif /* STM32F10X_CL */
+ 312:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 313:Drivers/CMSIS/Source/system_stm32f10x.c **** #if defined (STM32F10X_LD_VL) || defined (STM32F10X_MD_VL) || (defined STM32F10X_HD_VL)
+ 314:Drivers/CMSIS/Source/system_stm32f10x.c ****   uint32_t prediv1factor = 0;
+ 315:Drivers/CMSIS/Source/system_stm32f10x.c **** #endif /* STM32F10X_LD_VL or STM32F10X_MD_VL or STM32F10X_HD_VL */
+ 316:Drivers/CMSIS/Source/system_stm32f10x.c ****     
+ 317:Drivers/CMSIS/Source/system_stm32f10x.c ****   /* Get SYSCLK source -------------------------------------------------------*/
+ 318:Drivers/CMSIS/Source/system_stm32f10x.c ****   tmp = RCC->CFGR & RCC_CFGR_SWS;
+ARM GAS  C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s 			page 7
+
+
+ 319:Drivers/CMSIS/Source/system_stm32f10x.c ****   
+ 320:Drivers/CMSIS/Source/system_stm32f10x.c ****   switch (tmp)
+ 321:Drivers/CMSIS/Source/system_stm32f10x.c ****   {
+ 322:Drivers/CMSIS/Source/system_stm32f10x.c ****     case 0x00:  /* HSI used as system clock */
+ 323:Drivers/CMSIS/Source/system_stm32f10x.c ****       SystemCoreClock = HSI_VALUE;
+ 324:Drivers/CMSIS/Source/system_stm32f10x.c ****       break;
+ 325:Drivers/CMSIS/Source/system_stm32f10x.c ****     case 0x04:  /* HSE used as system clock */
+ 326:Drivers/CMSIS/Source/system_stm32f10x.c ****       SystemCoreClock = HSE_VALUE;
+ 327:Drivers/CMSIS/Source/system_stm32f10x.c ****       break;
+ 328:Drivers/CMSIS/Source/system_stm32f10x.c ****     case 0x08:  /* PLL used as system clock */
+ 329:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 330:Drivers/CMSIS/Source/system_stm32f10x.c ****       /* Get PLL clock source and multiplication factor ----------------------*/
+ 331:Drivers/CMSIS/Source/system_stm32f10x.c ****       pllmull = RCC->CFGR & RCC_CFGR_PLLMULL;
+ 332:Drivers/CMSIS/Source/system_stm32f10x.c ****       pllsource = RCC->CFGR & RCC_CFGR_PLLSRC;
+ 333:Drivers/CMSIS/Source/system_stm32f10x.c ****       
+ 334:Drivers/CMSIS/Source/system_stm32f10x.c **** #ifndef STM32F10X_CL      
+ 335:Drivers/CMSIS/Source/system_stm32f10x.c ****       pllmull = ( pllmull >> 18) + 2;
+ 336:Drivers/CMSIS/Source/system_stm32f10x.c ****       
+ 337:Drivers/CMSIS/Source/system_stm32f10x.c ****       if (pllsource == 0x00)
+ 338:Drivers/CMSIS/Source/system_stm32f10x.c ****       {
+ 339:Drivers/CMSIS/Source/system_stm32f10x.c ****         /* HSI oscillator clock divided by 2 selected as PLL clock entry */
+ 340:Drivers/CMSIS/Source/system_stm32f10x.c ****         SystemCoreClock = (HSI_VALUE >> 1) * pllmull;
+ 341:Drivers/CMSIS/Source/system_stm32f10x.c ****       }
+ 342:Drivers/CMSIS/Source/system_stm32f10x.c ****       else
+ 343:Drivers/CMSIS/Source/system_stm32f10x.c ****       {
+ 344:Drivers/CMSIS/Source/system_stm32f10x.c ****  #if defined (STM32F10X_LD_VL) || defined (STM32F10X_MD_VL) || (defined STM32F10X_HD_VL)
+ 345:Drivers/CMSIS/Source/system_stm32f10x.c ****        prediv1factor = (RCC->CFGR2 & RCC_CFGR2_PREDIV1) + 1;
+ 346:Drivers/CMSIS/Source/system_stm32f10x.c ****        /* HSE oscillator clock selected as PREDIV1 clock entry */
+ 347:Drivers/CMSIS/Source/system_stm32f10x.c ****        SystemCoreClock = (HSE_VALUE / prediv1factor) * pllmull; 
+ 348:Drivers/CMSIS/Source/system_stm32f10x.c ****  #else
+ 349:Drivers/CMSIS/Source/system_stm32f10x.c ****         /* HSE selected as PLL clock entry */
+ 350:Drivers/CMSIS/Source/system_stm32f10x.c ****         if ((RCC->CFGR & RCC_CFGR_PLLXTPRE) != (uint32_t)RESET)
+ 351:Drivers/CMSIS/Source/system_stm32f10x.c ****         {/* HSE oscillator clock divided by 2 */
+ 352:Drivers/CMSIS/Source/system_stm32f10x.c ****           SystemCoreClock = (HSE_VALUE >> 1) * pllmull;
+ 353:Drivers/CMSIS/Source/system_stm32f10x.c ****         }
+ 354:Drivers/CMSIS/Source/system_stm32f10x.c ****         else
+ 355:Drivers/CMSIS/Source/system_stm32f10x.c ****         {
+ 356:Drivers/CMSIS/Source/system_stm32f10x.c ****           SystemCoreClock = HSE_VALUE * pllmull;
+ 357:Drivers/CMSIS/Source/system_stm32f10x.c ****         }
+ 358:Drivers/CMSIS/Source/system_stm32f10x.c ****  #endif
+ 359:Drivers/CMSIS/Source/system_stm32f10x.c ****       }
+ 360:Drivers/CMSIS/Source/system_stm32f10x.c **** #else
+ 361:Drivers/CMSIS/Source/system_stm32f10x.c ****       pllmull = pllmull >> 18;
+ 362:Drivers/CMSIS/Source/system_stm32f10x.c ****       
+ 363:Drivers/CMSIS/Source/system_stm32f10x.c ****       if (pllmull != 0x0D)
+ 364:Drivers/CMSIS/Source/system_stm32f10x.c ****       {
+ 365:Drivers/CMSIS/Source/system_stm32f10x.c ****          pllmull += 2;
+ 366:Drivers/CMSIS/Source/system_stm32f10x.c ****       }
+ 367:Drivers/CMSIS/Source/system_stm32f10x.c ****       else
+ 368:Drivers/CMSIS/Source/system_stm32f10x.c ****       { /* PLL multiplication factor = PLL input clock * 6.5 */
+ 369:Drivers/CMSIS/Source/system_stm32f10x.c ****         pllmull = 13 / 2; 
+ 370:Drivers/CMSIS/Source/system_stm32f10x.c ****       }
+ 371:Drivers/CMSIS/Source/system_stm32f10x.c ****             
+ 372:Drivers/CMSIS/Source/system_stm32f10x.c ****       if (pllsource == 0x00)
+ 373:Drivers/CMSIS/Source/system_stm32f10x.c ****       {
+ 374:Drivers/CMSIS/Source/system_stm32f10x.c ****         /* HSI oscillator clock divided by 2 selected as PLL clock entry */
+ 375:Drivers/CMSIS/Source/system_stm32f10x.c ****         SystemCoreClock = (HSI_VALUE >> 1) * pllmull;
+ARM GAS  C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s 			page 8
+
+
+ 376:Drivers/CMSIS/Source/system_stm32f10x.c ****       }
+ 377:Drivers/CMSIS/Source/system_stm32f10x.c ****       else
+ 378:Drivers/CMSIS/Source/system_stm32f10x.c ****       {/* PREDIV1 selected as PLL clock entry */
+ 379:Drivers/CMSIS/Source/system_stm32f10x.c ****         
+ 380:Drivers/CMSIS/Source/system_stm32f10x.c ****         /* Get PREDIV1 clock source and division factor */
+ 381:Drivers/CMSIS/Source/system_stm32f10x.c ****         prediv1source = RCC->CFGR2 & RCC_CFGR2_PREDIV1SRC;
+ 382:Drivers/CMSIS/Source/system_stm32f10x.c ****         prediv1factor = (RCC->CFGR2 & RCC_CFGR2_PREDIV1) + 1;
+ 383:Drivers/CMSIS/Source/system_stm32f10x.c ****         
+ 384:Drivers/CMSIS/Source/system_stm32f10x.c ****         if (prediv1source == 0)
+ 385:Drivers/CMSIS/Source/system_stm32f10x.c ****         { 
+ 386:Drivers/CMSIS/Source/system_stm32f10x.c ****           /* HSE oscillator clock selected as PREDIV1 clock entry */
+ 387:Drivers/CMSIS/Source/system_stm32f10x.c ****           SystemCoreClock = (HSE_VALUE / prediv1factor) * pllmull;          
+ 388:Drivers/CMSIS/Source/system_stm32f10x.c ****         }
+ 389:Drivers/CMSIS/Source/system_stm32f10x.c ****         else
+ 390:Drivers/CMSIS/Source/system_stm32f10x.c ****         {/* PLL2 clock selected as PREDIV1 clock entry */
+ 391:Drivers/CMSIS/Source/system_stm32f10x.c ****           
+ 392:Drivers/CMSIS/Source/system_stm32f10x.c ****           /* Get PREDIV2 division factor and PLL2 multiplication factor */
+ 393:Drivers/CMSIS/Source/system_stm32f10x.c ****           prediv2factor = ((RCC->CFGR2 & RCC_CFGR2_PREDIV2) >> 4) + 1;
+ 394:Drivers/CMSIS/Source/system_stm32f10x.c ****           pll2mull = ((RCC->CFGR2 & RCC_CFGR2_PLL2MUL) >> 8 ) + 2; 
+ 395:Drivers/CMSIS/Source/system_stm32f10x.c ****           SystemCoreClock = (((HSE_VALUE / prediv2factor) * pll2mull) / prediv1factor) * pllmull;  
+ 396:Drivers/CMSIS/Source/system_stm32f10x.c ****         }
+ 397:Drivers/CMSIS/Source/system_stm32f10x.c ****       }
+ 398:Drivers/CMSIS/Source/system_stm32f10x.c **** #endif /* STM32F10X_CL */ 
+ 399:Drivers/CMSIS/Source/system_stm32f10x.c ****       break;
+ 400:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 401:Drivers/CMSIS/Source/system_stm32f10x.c ****     default:
+ 402:Drivers/CMSIS/Source/system_stm32f10x.c ****       SystemCoreClock = HSI_VALUE;
+ 403:Drivers/CMSIS/Source/system_stm32f10x.c ****       break;
+ 404:Drivers/CMSIS/Source/system_stm32f10x.c ****   }
+ 405:Drivers/CMSIS/Source/system_stm32f10x.c ****   
+ 406:Drivers/CMSIS/Source/system_stm32f10x.c ****   /* Compute HCLK clock frequency ----------------*/
+ 407:Drivers/CMSIS/Source/system_stm32f10x.c ****   /* Get HCLK prescaler */
+ 408:Drivers/CMSIS/Source/system_stm32f10x.c ****   tmp = AHBPrescTable[((RCC->CFGR & RCC_CFGR_HPRE) >> 4)];
+ 409:Drivers/CMSIS/Source/system_stm32f10x.c ****   /* HCLK clock frequency */
+ 410:Drivers/CMSIS/Source/system_stm32f10x.c ****   SystemCoreClock >>= tmp;  
+ 411:Drivers/CMSIS/Source/system_stm32f10x.c **** }
+ 412:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 413:Drivers/CMSIS/Source/system_stm32f10x.c **** /**
+ 414:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @brief  Configures the System clock frequency, HCLK, PCLK2 and PCLK1 prescalers.
+ 415:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @param  None
+ 416:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @retval None
+ 417:Drivers/CMSIS/Source/system_stm32f10x.c ****   */
+ 418:Drivers/CMSIS/Source/system_stm32f10x.c **** static void SetSysClock(void)
+ 419:Drivers/CMSIS/Source/system_stm32f10x.c **** {
+ 420:Drivers/CMSIS/Source/system_stm32f10x.c **** #ifdef SYSCLK_FREQ_HSE
+ 421:Drivers/CMSIS/Source/system_stm32f10x.c ****   SetSysClockToHSE();
+ 422:Drivers/CMSIS/Source/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_24MHz
+ 423:Drivers/CMSIS/Source/system_stm32f10x.c ****   SetSysClockTo24();
+ 424:Drivers/CMSIS/Source/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_36MHz
+ 425:Drivers/CMSIS/Source/system_stm32f10x.c ****   SetSysClockTo36();
+ 426:Drivers/CMSIS/Source/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_48MHz
+ 427:Drivers/CMSIS/Source/system_stm32f10x.c ****   SetSysClockTo48();
+ 428:Drivers/CMSIS/Source/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_56MHz
+ 429:Drivers/CMSIS/Source/system_stm32f10x.c ****   SetSysClockTo56();  
+ 430:Drivers/CMSIS/Source/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_72MHz
+ 431:Drivers/CMSIS/Source/system_stm32f10x.c ****   SetSysClockTo72();
+ 432:Drivers/CMSIS/Source/system_stm32f10x.c **** #endif
+ARM GAS  C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s 			page 9
+
+
+ 433:Drivers/CMSIS/Source/system_stm32f10x.c ****  
+ 434:Drivers/CMSIS/Source/system_stm32f10x.c ****  /* If none of the define above is enabled, the HSI is used as System clock
+ 435:Drivers/CMSIS/Source/system_stm32f10x.c ****     source (default after reset) */ 
+ 436:Drivers/CMSIS/Source/system_stm32f10x.c **** }
+ 437:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 438:Drivers/CMSIS/Source/system_stm32f10x.c **** /**
+ 439:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @brief  Setup the external memory controller. Called in startup_stm32f10x.s 
+ 440:Drivers/CMSIS/Source/system_stm32f10x.c ****   *          before jump to __main
+ 441:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @param  None
+ 442:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @retval None
+ 443:Drivers/CMSIS/Source/system_stm32f10x.c ****   */ 
+ 444:Drivers/CMSIS/Source/system_stm32f10x.c **** #ifdef DATA_IN_ExtSRAM
+ 445:Drivers/CMSIS/Source/system_stm32f10x.c **** /**
+ 446:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @brief  Setup the external memory controller. 
+ 447:Drivers/CMSIS/Source/system_stm32f10x.c ****   *         Called in startup_stm32f10x_xx.s/.c before jump to main.
+ 448:Drivers/CMSIS/Source/system_stm32f10x.c ****   * 	      This function configures the external SRAM mounted on STM3210E-EVAL
+ 449:Drivers/CMSIS/Source/system_stm32f10x.c ****   *         board (STM32 High density devices). This SRAM will be used as program
+ 450:Drivers/CMSIS/Source/system_stm32f10x.c ****   *         data memory (including heap and stack).
+ 451:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @param  None
+ 452:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @retval None
+ 453:Drivers/CMSIS/Source/system_stm32f10x.c ****   */ 
+ 454:Drivers/CMSIS/Source/system_stm32f10x.c **** void SystemInit_ExtMemCtl(void) 
+ 455:Drivers/CMSIS/Source/system_stm32f10x.c **** {
+ 456:Drivers/CMSIS/Source/system_stm32f10x.c **** /*!< FSMC Bank1 NOR/SRAM3 is used for the STM3210E-EVAL, if another Bank is 
+ 457:Drivers/CMSIS/Source/system_stm32f10x.c ****   required, then adjust the Register Addresses */
+ 458:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 459:Drivers/CMSIS/Source/system_stm32f10x.c ****   /* Enable FSMC clock */
+ 460:Drivers/CMSIS/Source/system_stm32f10x.c ****   RCC->AHBENR = 0x00000114;
+ 461:Drivers/CMSIS/Source/system_stm32f10x.c ****   
+ 462:Drivers/CMSIS/Source/system_stm32f10x.c ****   /* Enable GPIOD, GPIOE, GPIOF and GPIOG clocks */  
+ 463:Drivers/CMSIS/Source/system_stm32f10x.c ****   RCC->APB2ENR = 0x000001E0;
+ 464:Drivers/CMSIS/Source/system_stm32f10x.c ****   
+ 465:Drivers/CMSIS/Source/system_stm32f10x.c **** /* ---------------  SRAM Data lines, NOE and NWE configuration ---------------*/
+ 466:Drivers/CMSIS/Source/system_stm32f10x.c **** /*----------------  SRAM Address lines configuration -------------------------*/
+ 467:Drivers/CMSIS/Source/system_stm32f10x.c **** /*----------------  NOE and NWE configuration --------------------------------*/  
+ 468:Drivers/CMSIS/Source/system_stm32f10x.c **** /*----------------  NE3 configuration ----------------------------------------*/
+ 469:Drivers/CMSIS/Source/system_stm32f10x.c **** /*----------------  NBL0, NBL1 configuration ---------------------------------*/
+ 470:Drivers/CMSIS/Source/system_stm32f10x.c ****   
+ 471:Drivers/CMSIS/Source/system_stm32f10x.c ****   GPIOD->CRL = 0x44BB44BB;  
+ 472:Drivers/CMSIS/Source/system_stm32f10x.c ****   GPIOD->CRH = 0xBBBBBBBB;
+ 473:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 474:Drivers/CMSIS/Source/system_stm32f10x.c ****   GPIOE->CRL = 0xB44444BB;  
+ 475:Drivers/CMSIS/Source/system_stm32f10x.c ****   GPIOE->CRH = 0xBBBBBBBB;
+ 476:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 477:Drivers/CMSIS/Source/system_stm32f10x.c ****   GPIOF->CRL = 0x44BBBBBB;  
+ 478:Drivers/CMSIS/Source/system_stm32f10x.c ****   GPIOF->CRH = 0xBBBB4444;
+ 479:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 480:Drivers/CMSIS/Source/system_stm32f10x.c ****   GPIOG->CRL = 0x44BBBBBB;  
+ 481:Drivers/CMSIS/Source/system_stm32f10x.c ****   GPIOG->CRH = 0x44444B44;
+ 482:Drivers/CMSIS/Source/system_stm32f10x.c ****    
+ 483:Drivers/CMSIS/Source/system_stm32f10x.c **** /*----------------  FSMC Configuration ---------------------------------------*/  
+ 484:Drivers/CMSIS/Source/system_stm32f10x.c **** /*----------------  Enable FSMC Bank1_SRAM Bank ------------------------------*/
+ 485:Drivers/CMSIS/Source/system_stm32f10x.c ****   
+ 486:Drivers/CMSIS/Source/system_stm32f10x.c ****   FSMC_Bank1->BTCR[4] = 0x00001011;
+ 487:Drivers/CMSIS/Source/system_stm32f10x.c ****   FSMC_Bank1->BTCR[5] = 0x00000200;
+ 488:Drivers/CMSIS/Source/system_stm32f10x.c **** }
+ 489:Drivers/CMSIS/Source/system_stm32f10x.c **** #endif /* DATA_IN_ExtSRAM */
+ARM GAS  C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s 			page 10
+
+
+ 490:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 491:Drivers/CMSIS/Source/system_stm32f10x.c **** #ifdef SYSCLK_FREQ_HSE
+ 492:Drivers/CMSIS/Source/system_stm32f10x.c **** /**
+ 493:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @brief  Selects HSE as System clock source and configure HCLK, PCLK2
+ 494:Drivers/CMSIS/Source/system_stm32f10x.c ****   *         and PCLK1 prescalers.
+ 495:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @note   This function should be used only after reset.
+ 496:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @param  None
+ 497:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @retval None
+ 498:Drivers/CMSIS/Source/system_stm32f10x.c ****   */
+ 499:Drivers/CMSIS/Source/system_stm32f10x.c **** static void SetSysClockToHSE(void)
+ 500:Drivers/CMSIS/Source/system_stm32f10x.c **** {
+ 501:Drivers/CMSIS/Source/system_stm32f10x.c ****   __IO uint32_t StartUpCounter = 0, HSEStatus = 0;
+ 502:Drivers/CMSIS/Source/system_stm32f10x.c ****   
+ 503:Drivers/CMSIS/Source/system_stm32f10x.c ****   /* SYSCLK, HCLK, PCLK2 and PCLK1 configuration ---------------------------*/    
+ 504:Drivers/CMSIS/Source/system_stm32f10x.c ****   /* Enable HSE */    
+ 505:Drivers/CMSIS/Source/system_stm32f10x.c ****   RCC->CR |= ((uint32_t)RCC_CR_HSEON);
+ 506:Drivers/CMSIS/Source/system_stm32f10x.c ****  
+ 507:Drivers/CMSIS/Source/system_stm32f10x.c ****   /* Wait till HSE is ready and if Time out is reached exit */
+ 508:Drivers/CMSIS/Source/system_stm32f10x.c ****   do
+ 509:Drivers/CMSIS/Source/system_stm32f10x.c ****   {
+ 510:Drivers/CMSIS/Source/system_stm32f10x.c ****     HSEStatus = RCC->CR & RCC_CR_HSERDY;
+ 511:Drivers/CMSIS/Source/system_stm32f10x.c ****     StartUpCounter++;  
+ 512:Drivers/CMSIS/Source/system_stm32f10x.c ****   } while((HSEStatus == 0) && (StartUpCounter != HSE_STARTUP_TIMEOUT));
+ 513:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 514:Drivers/CMSIS/Source/system_stm32f10x.c ****   if ((RCC->CR & RCC_CR_HSERDY) != RESET)
+ 515:Drivers/CMSIS/Source/system_stm32f10x.c ****   {
+ 516:Drivers/CMSIS/Source/system_stm32f10x.c ****     HSEStatus = (uint32_t)0x01;
+ 517:Drivers/CMSIS/Source/system_stm32f10x.c ****   }
+ 518:Drivers/CMSIS/Source/system_stm32f10x.c ****   else
+ 519:Drivers/CMSIS/Source/system_stm32f10x.c ****   {
+ 520:Drivers/CMSIS/Source/system_stm32f10x.c ****     HSEStatus = (uint32_t)0x00;
+ 521:Drivers/CMSIS/Source/system_stm32f10x.c ****   }  
+ 522:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 523:Drivers/CMSIS/Source/system_stm32f10x.c ****   if (HSEStatus == (uint32_t)0x01)
+ 524:Drivers/CMSIS/Source/system_stm32f10x.c ****   {
+ 525:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 526:Drivers/CMSIS/Source/system_stm32f10x.c **** #if !defined STM32F10X_LD_VL && !defined STM32F10X_MD_VL && !defined STM32F10X_HD_VL
+ 527:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Enable Prefetch Buffer */
+ 528:Drivers/CMSIS/Source/system_stm32f10x.c ****     FLASH->ACR |= FLASH_ACR_PRFTBE;
+ 529:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 530:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Flash 0 wait state */
+ 531:Drivers/CMSIS/Source/system_stm32f10x.c ****     FLASH->ACR &= (uint32_t)((uint32_t)~FLASH_ACR_LATENCY);
+ 532:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 533:Drivers/CMSIS/Source/system_stm32f10x.c **** #ifndef STM32F10X_CL
+ 534:Drivers/CMSIS/Source/system_stm32f10x.c ****     FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_0;
+ 535:Drivers/CMSIS/Source/system_stm32f10x.c **** #else
+ 536:Drivers/CMSIS/Source/system_stm32f10x.c ****     if (HSE_VALUE <= 24000000)
+ 537:Drivers/CMSIS/Source/system_stm32f10x.c **** 	{
+ 538:Drivers/CMSIS/Source/system_stm32f10x.c ****       FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_0;
+ 539:Drivers/CMSIS/Source/system_stm32f10x.c **** 	}
+ 540:Drivers/CMSIS/Source/system_stm32f10x.c **** 	else
+ 541:Drivers/CMSIS/Source/system_stm32f10x.c **** 	{
+ 542:Drivers/CMSIS/Source/system_stm32f10x.c ****       FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_1;
+ 543:Drivers/CMSIS/Source/system_stm32f10x.c **** 	}
+ 544:Drivers/CMSIS/Source/system_stm32f10x.c **** #endif /* STM32F10X_CL */
+ 545:Drivers/CMSIS/Source/system_stm32f10x.c **** #endif
+ 546:Drivers/CMSIS/Source/system_stm32f10x.c ****  
+ARM GAS  C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s 			page 11
+
+
+ 547:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* HCLK = SYSCLK */
+ 548:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_HPRE_DIV1;
+ 549:Drivers/CMSIS/Source/system_stm32f10x.c ****       
+ 550:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* PCLK2 = HCLK */
+ 551:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE2_DIV1;
+ 552:Drivers/CMSIS/Source/system_stm32f10x.c ****     
+ 553:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* PCLK1 = HCLK */
+ 554:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE1_DIV1;
+ 555:Drivers/CMSIS/Source/system_stm32f10x.c ****     
+ 556:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Select HSE as system clock source */
+ 557:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_SW));
+ 558:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_SW_HSE;    
+ 559:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 560:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Wait till HSE is used as system clock source */
+ 561:Drivers/CMSIS/Source/system_stm32f10x.c ****     while ((RCC->CFGR & (uint32_t)RCC_CFGR_SWS) != (uint32_t)0x04)
+ 562:Drivers/CMSIS/Source/system_stm32f10x.c ****     {
+ 563:Drivers/CMSIS/Source/system_stm32f10x.c ****     }
+ 564:Drivers/CMSIS/Source/system_stm32f10x.c ****   }
+ 565:Drivers/CMSIS/Source/system_stm32f10x.c ****   else
+ 566:Drivers/CMSIS/Source/system_stm32f10x.c ****   { /* If HSE fails to start-up, the application will have wrong clock 
+ 567:Drivers/CMSIS/Source/system_stm32f10x.c ****          configuration. User can add here some code to deal with this error */
+ 568:Drivers/CMSIS/Source/system_stm32f10x.c ****   }  
+ 569:Drivers/CMSIS/Source/system_stm32f10x.c **** }
+ 570:Drivers/CMSIS/Source/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_24MHz
+ 571:Drivers/CMSIS/Source/system_stm32f10x.c **** /**
+ 572:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @brief  Sets System clock frequency to 24MHz and configure HCLK, PCLK2 
+ 573:Drivers/CMSIS/Source/system_stm32f10x.c ****   *         and PCLK1 prescalers.
+ 574:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @note   This function should be used only after reset.
+ 575:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @param  None
+ 576:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @retval None
+ 577:Drivers/CMSIS/Source/system_stm32f10x.c ****   */
+ 578:Drivers/CMSIS/Source/system_stm32f10x.c **** static void SetSysClockTo24(void)
+ 579:Drivers/CMSIS/Source/system_stm32f10x.c **** {
+ 580:Drivers/CMSIS/Source/system_stm32f10x.c ****   __IO uint32_t StartUpCounter = 0, HSEStatus = 0;
+ 581:Drivers/CMSIS/Source/system_stm32f10x.c ****   
+ 582:Drivers/CMSIS/Source/system_stm32f10x.c ****   /* SYSCLK, HCLK, PCLK2 and PCLK1 configuration ---------------------------*/    
+ 583:Drivers/CMSIS/Source/system_stm32f10x.c ****   /* Enable HSE */    
+ 584:Drivers/CMSIS/Source/system_stm32f10x.c ****   RCC->CR |= ((uint32_t)RCC_CR_HSEON);
+ 585:Drivers/CMSIS/Source/system_stm32f10x.c ****  
+ 586:Drivers/CMSIS/Source/system_stm32f10x.c ****   /* Wait till HSE is ready and if Time out is reached exit */
+ 587:Drivers/CMSIS/Source/system_stm32f10x.c ****   do
+ 588:Drivers/CMSIS/Source/system_stm32f10x.c ****   {
+ 589:Drivers/CMSIS/Source/system_stm32f10x.c ****     HSEStatus = RCC->CR & RCC_CR_HSERDY;
+ 590:Drivers/CMSIS/Source/system_stm32f10x.c ****     StartUpCounter++;  
+ 591:Drivers/CMSIS/Source/system_stm32f10x.c ****   } while((HSEStatus == 0) && (StartUpCounter != HSE_STARTUP_TIMEOUT));
+ 592:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 593:Drivers/CMSIS/Source/system_stm32f10x.c ****   if ((RCC->CR & RCC_CR_HSERDY) != RESET)
+ 594:Drivers/CMSIS/Source/system_stm32f10x.c ****   {
+ 595:Drivers/CMSIS/Source/system_stm32f10x.c ****     HSEStatus = (uint32_t)0x01;
+ 596:Drivers/CMSIS/Source/system_stm32f10x.c ****   }
+ 597:Drivers/CMSIS/Source/system_stm32f10x.c ****   else
+ 598:Drivers/CMSIS/Source/system_stm32f10x.c ****   {
+ 599:Drivers/CMSIS/Source/system_stm32f10x.c ****     HSEStatus = (uint32_t)0x00;
+ 600:Drivers/CMSIS/Source/system_stm32f10x.c ****   }  
+ 601:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 602:Drivers/CMSIS/Source/system_stm32f10x.c ****   if (HSEStatus == (uint32_t)0x01)
+ 603:Drivers/CMSIS/Source/system_stm32f10x.c ****   {
+ARM GAS  C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s 			page 12
+
+
+ 604:Drivers/CMSIS/Source/system_stm32f10x.c **** #if !defined STM32F10X_LD_VL && !defined STM32F10X_MD_VL && !defined STM32F10X_HD_VL 
+ 605:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Enable Prefetch Buffer */
+ 606:Drivers/CMSIS/Source/system_stm32f10x.c ****     FLASH->ACR |= FLASH_ACR_PRFTBE;
+ 607:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 608:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Flash 0 wait state */
+ 609:Drivers/CMSIS/Source/system_stm32f10x.c ****     FLASH->ACR &= (uint32_t)((uint32_t)~FLASH_ACR_LATENCY);
+ 610:Drivers/CMSIS/Source/system_stm32f10x.c ****     FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_0;    
+ 611:Drivers/CMSIS/Source/system_stm32f10x.c **** #endif
+ 612:Drivers/CMSIS/Source/system_stm32f10x.c ****  
+ 613:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* HCLK = SYSCLK */
+ 614:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_HPRE_DIV1;
+ 615:Drivers/CMSIS/Source/system_stm32f10x.c ****       
+ 616:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* PCLK2 = HCLK */
+ 617:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE2_DIV1;
+ 618:Drivers/CMSIS/Source/system_stm32f10x.c ****     
+ 619:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* PCLK1 = HCLK */
+ 620:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE1_DIV1;
+ 621:Drivers/CMSIS/Source/system_stm32f10x.c ****     
+ 622:Drivers/CMSIS/Source/system_stm32f10x.c **** #ifdef STM32F10X_CL
+ 623:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Configure PLLs ------------------------------------------------------*/
+ 624:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* PLL configuration: PLLCLK = PREDIV1 * 6 = 24 MHz */ 
+ 625:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)~(RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLSRC | RCC_CFGR_PLLMULL);
+ 626:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLXTPRE_PREDIV1 | RCC_CFGR_PLLSRC_PREDIV1 | 
+ 627:Drivers/CMSIS/Source/system_stm32f10x.c ****                             RCC_CFGR_PLLMULL6); 
+ 628:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 629:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* PLL2 configuration: PLL2CLK = (HSE / 5) * 8 = 40 MHz */
+ 630:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* PREDIV1 configuration: PREDIV1CLK = PLL2 / 10 = 4 MHz */       
+ 631:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR2 &= (uint32_t)~(RCC_CFGR2_PREDIV2 | RCC_CFGR2_PLL2MUL |
+ 632:Drivers/CMSIS/Source/system_stm32f10x.c ****                               RCC_CFGR2_PREDIV1 | RCC_CFGR2_PREDIV1SRC);
+ 633:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR2 |= (uint32_t)(RCC_CFGR2_PREDIV2_DIV5 | RCC_CFGR2_PLL2MUL8 |
+ 634:Drivers/CMSIS/Source/system_stm32f10x.c ****                              RCC_CFGR2_PREDIV1SRC_PLL2 | RCC_CFGR2_PREDIV1_DIV10);
+ 635:Drivers/CMSIS/Source/system_stm32f10x.c ****   
+ 636:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Enable PLL2 */
+ 637:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CR |= RCC_CR_PLL2ON;
+ 638:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Wait till PLL2 is ready */
+ 639:Drivers/CMSIS/Source/system_stm32f10x.c ****     while((RCC->CR & RCC_CR_PLL2RDY) == 0)
+ 640:Drivers/CMSIS/Source/system_stm32f10x.c ****     {
+ 641:Drivers/CMSIS/Source/system_stm32f10x.c ****     }   
+ 642:Drivers/CMSIS/Source/system_stm32f10x.c **** #elif defined (STM32F10X_LD_VL) || defined (STM32F10X_MD_VL) || defined (STM32F10X_HD_VL)
+ 643:Drivers/CMSIS/Source/system_stm32f10x.c ****     /*  PLL configuration:  = (HSE / 2) * 6 = 24 MHz */
+ 644:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_PLLSRC | RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLMULL));
+ 645:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLSRC_PREDIV1 | RCC_CFGR_PLLXTPRE_PREDIV1_Div2 | RCC_CFGR_PLL
+ 646:Drivers/CMSIS/Source/system_stm32f10x.c **** #else    
+ 647:Drivers/CMSIS/Source/system_stm32f10x.c ****     /*  PLL configuration:  = (HSE / 2) * 6 = 24 MHz */
+ 648:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_PLLSRC | RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLMULL));
+ 649:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLSRC_HSE | RCC_CFGR_PLLXTPRE_HSE_Div2 | RCC_CFGR_PLLMULL6);
+ 650:Drivers/CMSIS/Source/system_stm32f10x.c **** #endif /* STM32F10X_CL */
+ 651:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 652:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Enable PLL */
+ 653:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CR |= RCC_CR_PLLON;
+ 654:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 655:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Wait till PLL is ready */
+ 656:Drivers/CMSIS/Source/system_stm32f10x.c ****     while((RCC->CR & RCC_CR_PLLRDY) == 0)
+ 657:Drivers/CMSIS/Source/system_stm32f10x.c ****     {
+ 658:Drivers/CMSIS/Source/system_stm32f10x.c ****     }
+ 659:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 660:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Select PLL as system clock source */
+ARM GAS  C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s 			page 13
+
+
+ 661:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_SW));
+ 662:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_SW_PLL;    
+ 663:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 664:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Wait till PLL is used as system clock source */
+ 665:Drivers/CMSIS/Source/system_stm32f10x.c ****     while ((RCC->CFGR & (uint32_t)RCC_CFGR_SWS) != (uint32_t)0x08)
+ 666:Drivers/CMSIS/Source/system_stm32f10x.c ****     {
+ 667:Drivers/CMSIS/Source/system_stm32f10x.c ****     }
+ 668:Drivers/CMSIS/Source/system_stm32f10x.c ****   }
+ 669:Drivers/CMSIS/Source/system_stm32f10x.c ****   else
+ 670:Drivers/CMSIS/Source/system_stm32f10x.c ****   { /* If HSE fails to start-up, the application will have wrong clock 
+ 671:Drivers/CMSIS/Source/system_stm32f10x.c ****          configuration. User can add here some code to deal with this error */
+ 672:Drivers/CMSIS/Source/system_stm32f10x.c ****   } 
+ 673:Drivers/CMSIS/Source/system_stm32f10x.c **** }
+ 674:Drivers/CMSIS/Source/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_36MHz
+ 675:Drivers/CMSIS/Source/system_stm32f10x.c **** /**
+ 676:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @brief  Sets System clock frequency to 36MHz and configure HCLK, PCLK2 
+ 677:Drivers/CMSIS/Source/system_stm32f10x.c ****   *         and PCLK1 prescalers. 
+ 678:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @note   This function should be used only after reset.
+ 679:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @param  None
+ 680:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @retval None
+ 681:Drivers/CMSIS/Source/system_stm32f10x.c ****   */
+ 682:Drivers/CMSIS/Source/system_stm32f10x.c **** static void SetSysClockTo36(void)
+ 683:Drivers/CMSIS/Source/system_stm32f10x.c **** {
+ 684:Drivers/CMSIS/Source/system_stm32f10x.c ****   __IO uint32_t StartUpCounter = 0, HSEStatus = 0;
+ 685:Drivers/CMSIS/Source/system_stm32f10x.c ****   
+ 686:Drivers/CMSIS/Source/system_stm32f10x.c ****   /* SYSCLK, HCLK, PCLK2 and PCLK1 configuration ---------------------------*/    
+ 687:Drivers/CMSIS/Source/system_stm32f10x.c ****   /* Enable HSE */    
+ 688:Drivers/CMSIS/Source/system_stm32f10x.c ****   RCC->CR |= ((uint32_t)RCC_CR_HSEON);
+ 689:Drivers/CMSIS/Source/system_stm32f10x.c ****  
+ 690:Drivers/CMSIS/Source/system_stm32f10x.c ****   /* Wait till HSE is ready and if Time out is reached exit */
+ 691:Drivers/CMSIS/Source/system_stm32f10x.c ****   do
+ 692:Drivers/CMSIS/Source/system_stm32f10x.c ****   {
+ 693:Drivers/CMSIS/Source/system_stm32f10x.c ****     HSEStatus = RCC->CR & RCC_CR_HSERDY;
+ 694:Drivers/CMSIS/Source/system_stm32f10x.c ****     StartUpCounter++;  
+ 695:Drivers/CMSIS/Source/system_stm32f10x.c ****   } while((HSEStatus == 0) && (StartUpCounter != HSE_STARTUP_TIMEOUT));
+ 696:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 697:Drivers/CMSIS/Source/system_stm32f10x.c ****   if ((RCC->CR & RCC_CR_HSERDY) != RESET)
+ 698:Drivers/CMSIS/Source/system_stm32f10x.c ****   {
+ 699:Drivers/CMSIS/Source/system_stm32f10x.c ****     HSEStatus = (uint32_t)0x01;
+ 700:Drivers/CMSIS/Source/system_stm32f10x.c ****   }
+ 701:Drivers/CMSIS/Source/system_stm32f10x.c ****   else
+ 702:Drivers/CMSIS/Source/system_stm32f10x.c ****   {
+ 703:Drivers/CMSIS/Source/system_stm32f10x.c ****     HSEStatus = (uint32_t)0x00;
+ 704:Drivers/CMSIS/Source/system_stm32f10x.c ****   }  
+ 705:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 706:Drivers/CMSIS/Source/system_stm32f10x.c ****   if (HSEStatus == (uint32_t)0x01)
+ 707:Drivers/CMSIS/Source/system_stm32f10x.c ****   {
+ 708:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Enable Prefetch Buffer */
+ 709:Drivers/CMSIS/Source/system_stm32f10x.c ****     FLASH->ACR |= FLASH_ACR_PRFTBE;
+ 710:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 711:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Flash 1 wait state */
+ 712:Drivers/CMSIS/Source/system_stm32f10x.c ****     FLASH->ACR &= (uint32_t)((uint32_t)~FLASH_ACR_LATENCY);
+ 713:Drivers/CMSIS/Source/system_stm32f10x.c ****     FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_1;    
+ 714:Drivers/CMSIS/Source/system_stm32f10x.c ****  
+ 715:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* HCLK = SYSCLK */
+ 716:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_HPRE_DIV1;
+ 717:Drivers/CMSIS/Source/system_stm32f10x.c ****       
+ARM GAS  C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s 			page 14
+
+
+ 718:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* PCLK2 = HCLK */
+ 719:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE2_DIV1;
+ 720:Drivers/CMSIS/Source/system_stm32f10x.c ****     
+ 721:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* PCLK1 = HCLK */
+ 722:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE1_DIV1;
+ 723:Drivers/CMSIS/Source/system_stm32f10x.c ****     
+ 724:Drivers/CMSIS/Source/system_stm32f10x.c **** #ifdef STM32F10X_CL
+ 725:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Configure PLLs ------------------------------------------------------*/
+ 726:Drivers/CMSIS/Source/system_stm32f10x.c ****     
+ 727:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* PLL configuration: PLLCLK = PREDIV1 * 9 = 36 MHz */ 
+ 728:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)~(RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLSRC | RCC_CFGR_PLLMULL);
+ 729:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLXTPRE_PREDIV1 | RCC_CFGR_PLLSRC_PREDIV1 | 
+ 730:Drivers/CMSIS/Source/system_stm32f10x.c ****                             RCC_CFGR_PLLMULL9); 
+ 731:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 732:Drivers/CMSIS/Source/system_stm32f10x.c **** 	/*!< PLL2 configuration: PLL2CLK = (HSE / 5) * 8 = 40 MHz */
+ 733:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* PREDIV1 configuration: PREDIV1CLK = PLL2 / 10 = 4 MHz */
+ 734:Drivers/CMSIS/Source/system_stm32f10x.c ****         
+ 735:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR2 &= (uint32_t)~(RCC_CFGR2_PREDIV2 | RCC_CFGR2_PLL2MUL |
+ 736:Drivers/CMSIS/Source/system_stm32f10x.c ****                               RCC_CFGR2_PREDIV1 | RCC_CFGR2_PREDIV1SRC);
+ 737:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR2 |= (uint32_t)(RCC_CFGR2_PREDIV2_DIV5 | RCC_CFGR2_PLL2MUL8 |
+ 738:Drivers/CMSIS/Source/system_stm32f10x.c ****                              RCC_CFGR2_PREDIV1SRC_PLL2 | RCC_CFGR2_PREDIV1_DIV10);
+ 739:Drivers/CMSIS/Source/system_stm32f10x.c ****   
+ 740:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Enable PLL2 */
+ 741:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CR |= RCC_CR_PLL2ON;
+ 742:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Wait till PLL2 is ready */
+ 743:Drivers/CMSIS/Source/system_stm32f10x.c ****     while((RCC->CR & RCC_CR_PLL2RDY) == 0)
+ 744:Drivers/CMSIS/Source/system_stm32f10x.c ****     {
+ 745:Drivers/CMSIS/Source/system_stm32f10x.c ****     }
+ 746:Drivers/CMSIS/Source/system_stm32f10x.c ****     
+ 747:Drivers/CMSIS/Source/system_stm32f10x.c **** #else    
+ 748:Drivers/CMSIS/Source/system_stm32f10x.c ****     /*  PLL configuration: PLLCLK = (HSE / 2) * 9 = 36 MHz */
+ 749:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_PLLSRC | RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLMULL));
+ 750:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLSRC_HSE | RCC_CFGR_PLLXTPRE_HSE_Div2 | RCC_CFGR_PLLMULL9);
+ 751:Drivers/CMSIS/Source/system_stm32f10x.c **** #endif /* STM32F10X_CL */
+ 752:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 753:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Enable PLL */
+ 754:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CR |= RCC_CR_PLLON;
+ 755:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 756:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Wait till PLL is ready */
+ 757:Drivers/CMSIS/Source/system_stm32f10x.c ****     while((RCC->CR & RCC_CR_PLLRDY) == 0)
+ 758:Drivers/CMSIS/Source/system_stm32f10x.c ****     {
+ 759:Drivers/CMSIS/Source/system_stm32f10x.c ****     }
+ 760:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 761:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Select PLL as system clock source */
+ 762:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_SW));
+ 763:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_SW_PLL;    
+ 764:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 765:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Wait till PLL is used as system clock source */
+ 766:Drivers/CMSIS/Source/system_stm32f10x.c ****     while ((RCC->CFGR & (uint32_t)RCC_CFGR_SWS) != (uint32_t)0x08)
+ 767:Drivers/CMSIS/Source/system_stm32f10x.c ****     {
+ 768:Drivers/CMSIS/Source/system_stm32f10x.c ****     }
+ 769:Drivers/CMSIS/Source/system_stm32f10x.c ****   }
+ 770:Drivers/CMSIS/Source/system_stm32f10x.c ****   else
+ 771:Drivers/CMSIS/Source/system_stm32f10x.c ****   { /* If HSE fails to start-up, the application will have wrong clock 
+ 772:Drivers/CMSIS/Source/system_stm32f10x.c ****          configuration. User can add here some code to deal with this error */
+ 773:Drivers/CMSIS/Source/system_stm32f10x.c ****   } 
+ 774:Drivers/CMSIS/Source/system_stm32f10x.c **** }
+ARM GAS  C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s 			page 15
+
+
+ 775:Drivers/CMSIS/Source/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_48MHz
+ 776:Drivers/CMSIS/Source/system_stm32f10x.c **** /**
+ 777:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @brief  Sets System clock frequency to 48MHz and configure HCLK, PCLK2 
+ 778:Drivers/CMSIS/Source/system_stm32f10x.c ****   *         and PCLK1 prescalers. 
+ 779:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @note   This function should be used only after reset.
+ 780:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @param  None
+ 781:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @retval None
+ 782:Drivers/CMSIS/Source/system_stm32f10x.c ****   */
+ 783:Drivers/CMSIS/Source/system_stm32f10x.c **** static void SetSysClockTo48(void)
+ 784:Drivers/CMSIS/Source/system_stm32f10x.c **** {
+ 785:Drivers/CMSIS/Source/system_stm32f10x.c ****   __IO uint32_t StartUpCounter = 0, HSEStatus = 0;
+ 786:Drivers/CMSIS/Source/system_stm32f10x.c ****   
+ 787:Drivers/CMSIS/Source/system_stm32f10x.c ****   /* SYSCLK, HCLK, PCLK2 and PCLK1 configuration ---------------------------*/    
+ 788:Drivers/CMSIS/Source/system_stm32f10x.c ****   /* Enable HSE */    
+ 789:Drivers/CMSIS/Source/system_stm32f10x.c ****   RCC->CR |= ((uint32_t)RCC_CR_HSEON);
+ 790:Drivers/CMSIS/Source/system_stm32f10x.c ****  
+ 791:Drivers/CMSIS/Source/system_stm32f10x.c ****   /* Wait till HSE is ready and if Time out is reached exit */
+ 792:Drivers/CMSIS/Source/system_stm32f10x.c ****   do
+ 793:Drivers/CMSIS/Source/system_stm32f10x.c ****   {
+ 794:Drivers/CMSIS/Source/system_stm32f10x.c ****     HSEStatus = RCC->CR & RCC_CR_HSERDY;
+ 795:Drivers/CMSIS/Source/system_stm32f10x.c ****     StartUpCounter++;  
+ 796:Drivers/CMSIS/Source/system_stm32f10x.c ****   } while((HSEStatus == 0) && (StartUpCounter != HSE_STARTUP_TIMEOUT));
+ 797:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 798:Drivers/CMSIS/Source/system_stm32f10x.c ****   if ((RCC->CR & RCC_CR_HSERDY) != RESET)
+ 799:Drivers/CMSIS/Source/system_stm32f10x.c ****   {
+ 800:Drivers/CMSIS/Source/system_stm32f10x.c ****     HSEStatus = (uint32_t)0x01;
+ 801:Drivers/CMSIS/Source/system_stm32f10x.c ****   }
+ 802:Drivers/CMSIS/Source/system_stm32f10x.c ****   else
+ 803:Drivers/CMSIS/Source/system_stm32f10x.c ****   {
+ 804:Drivers/CMSIS/Source/system_stm32f10x.c ****     HSEStatus = (uint32_t)0x00;
+ 805:Drivers/CMSIS/Source/system_stm32f10x.c ****   }  
+ 806:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 807:Drivers/CMSIS/Source/system_stm32f10x.c ****   if (HSEStatus == (uint32_t)0x01)
+ 808:Drivers/CMSIS/Source/system_stm32f10x.c ****   {
+ 809:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Enable Prefetch Buffer */
+ 810:Drivers/CMSIS/Source/system_stm32f10x.c ****     FLASH->ACR |= FLASH_ACR_PRFTBE;
+ 811:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 812:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Flash 1 wait state */
+ 813:Drivers/CMSIS/Source/system_stm32f10x.c ****     FLASH->ACR &= (uint32_t)((uint32_t)~FLASH_ACR_LATENCY);
+ 814:Drivers/CMSIS/Source/system_stm32f10x.c ****     FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_1;    
+ 815:Drivers/CMSIS/Source/system_stm32f10x.c ****  
+ 816:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* HCLK = SYSCLK */
+ 817:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_HPRE_DIV1;
+ 818:Drivers/CMSIS/Source/system_stm32f10x.c ****       
+ 819:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* PCLK2 = HCLK */
+ 820:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE2_DIV1;
+ 821:Drivers/CMSIS/Source/system_stm32f10x.c ****     
+ 822:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* PCLK1 = HCLK */
+ 823:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE1_DIV2;
+ 824:Drivers/CMSIS/Source/system_stm32f10x.c ****     
+ 825:Drivers/CMSIS/Source/system_stm32f10x.c **** #ifdef STM32F10X_CL
+ 826:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Configure PLLs ------------------------------------------------------*/
+ 827:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* PLL2 configuration: PLL2CLK = (HSE / 5) * 8 = 40 MHz */
+ 828:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* PREDIV1 configuration: PREDIV1CLK = PLL2 / 5 = 8 MHz */
+ 829:Drivers/CMSIS/Source/system_stm32f10x.c ****         
+ 830:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR2 &= (uint32_t)~(RCC_CFGR2_PREDIV2 | RCC_CFGR2_PLL2MUL |
+ 831:Drivers/CMSIS/Source/system_stm32f10x.c ****                               RCC_CFGR2_PREDIV1 | RCC_CFGR2_PREDIV1SRC);
+ARM GAS  C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s 			page 16
+
+
+ 832:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR2 |= (uint32_t)(RCC_CFGR2_PREDIV2_DIV5 | RCC_CFGR2_PLL2MUL8 |
+ 833:Drivers/CMSIS/Source/system_stm32f10x.c ****                              RCC_CFGR2_PREDIV1SRC_PLL2 | RCC_CFGR2_PREDIV1_DIV5);
+ 834:Drivers/CMSIS/Source/system_stm32f10x.c ****   
+ 835:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Enable PLL2 */
+ 836:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CR |= RCC_CR_PLL2ON;
+ 837:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Wait till PLL2 is ready */
+ 838:Drivers/CMSIS/Source/system_stm32f10x.c ****     while((RCC->CR & RCC_CR_PLL2RDY) == 0)
+ 839:Drivers/CMSIS/Source/system_stm32f10x.c ****     {
+ 840:Drivers/CMSIS/Source/system_stm32f10x.c ****     }
+ 841:Drivers/CMSIS/Source/system_stm32f10x.c ****     
+ 842:Drivers/CMSIS/Source/system_stm32f10x.c ****    
+ 843:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* PLL configuration: PLLCLK = PREDIV1 * 6 = 48 MHz */ 
+ 844:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)~(RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLSRC | RCC_CFGR_PLLMULL);
+ 845:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLXTPRE_PREDIV1 | RCC_CFGR_PLLSRC_PREDIV1 | 
+ 846:Drivers/CMSIS/Source/system_stm32f10x.c ****                             RCC_CFGR_PLLMULL6); 
+ 847:Drivers/CMSIS/Source/system_stm32f10x.c **** #else    
+ 848:Drivers/CMSIS/Source/system_stm32f10x.c ****     /*  PLL configuration: PLLCLK = HSE * 6 = 48 MHz */
+ 849:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_PLLSRC | RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLMULL));
+ 850:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLSRC_HSE | RCC_CFGR_PLLMULL6);
+ 851:Drivers/CMSIS/Source/system_stm32f10x.c **** #endif /* STM32F10X_CL */
+ 852:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 853:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Enable PLL */
+ 854:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CR |= RCC_CR_PLLON;
+ 855:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 856:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Wait till PLL is ready */
+ 857:Drivers/CMSIS/Source/system_stm32f10x.c ****     while((RCC->CR & RCC_CR_PLLRDY) == 0)
+ 858:Drivers/CMSIS/Source/system_stm32f10x.c ****     {
+ 859:Drivers/CMSIS/Source/system_stm32f10x.c ****     }
+ 860:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 861:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Select PLL as system clock source */
+ 862:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_SW));
+ 863:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_SW_PLL;    
+ 864:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 865:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Wait till PLL is used as system clock source */
+ 866:Drivers/CMSIS/Source/system_stm32f10x.c ****     while ((RCC->CFGR & (uint32_t)RCC_CFGR_SWS) != (uint32_t)0x08)
+ 867:Drivers/CMSIS/Source/system_stm32f10x.c ****     {
+ 868:Drivers/CMSIS/Source/system_stm32f10x.c ****     }
+ 869:Drivers/CMSIS/Source/system_stm32f10x.c ****   }
+ 870:Drivers/CMSIS/Source/system_stm32f10x.c ****   else
+ 871:Drivers/CMSIS/Source/system_stm32f10x.c ****   { /* If HSE fails to start-up, the application will have wrong clock 
+ 872:Drivers/CMSIS/Source/system_stm32f10x.c ****          configuration. User can add here some code to deal with this error */
+ 873:Drivers/CMSIS/Source/system_stm32f10x.c ****   } 
+ 874:Drivers/CMSIS/Source/system_stm32f10x.c **** }
+ 875:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 876:Drivers/CMSIS/Source/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_56MHz
+ 877:Drivers/CMSIS/Source/system_stm32f10x.c **** /**
+ 878:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @brief  Sets System clock frequency to 56MHz and configure HCLK, PCLK2 
+ 879:Drivers/CMSIS/Source/system_stm32f10x.c ****   *         and PCLK1 prescalers. 
+ 880:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @note   This function should be used only after reset.
+ 881:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @param  None
+ 882:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @retval None
+ 883:Drivers/CMSIS/Source/system_stm32f10x.c ****   */
+ 884:Drivers/CMSIS/Source/system_stm32f10x.c **** static void SetSysClockTo56(void)
+ 885:Drivers/CMSIS/Source/system_stm32f10x.c **** {
+ 886:Drivers/CMSIS/Source/system_stm32f10x.c ****   __IO uint32_t StartUpCounter = 0, HSEStatus = 0;
+ 887:Drivers/CMSIS/Source/system_stm32f10x.c ****   
+ 888:Drivers/CMSIS/Source/system_stm32f10x.c ****   /* SYSCLK, HCLK, PCLK2 and PCLK1 configuration ---------------------------*/   
+ARM GAS  C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s 			page 17
+
+
+ 889:Drivers/CMSIS/Source/system_stm32f10x.c ****   /* Enable HSE */    
+ 890:Drivers/CMSIS/Source/system_stm32f10x.c ****   RCC->CR |= ((uint32_t)RCC_CR_HSEON);
+ 891:Drivers/CMSIS/Source/system_stm32f10x.c ****  
+ 892:Drivers/CMSIS/Source/system_stm32f10x.c ****   /* Wait till HSE is ready and if Time out is reached exit */
+ 893:Drivers/CMSIS/Source/system_stm32f10x.c ****   do
+ 894:Drivers/CMSIS/Source/system_stm32f10x.c ****   {
+ 895:Drivers/CMSIS/Source/system_stm32f10x.c ****     HSEStatus = RCC->CR & RCC_CR_HSERDY;
+ 896:Drivers/CMSIS/Source/system_stm32f10x.c ****     StartUpCounter++;  
+ 897:Drivers/CMSIS/Source/system_stm32f10x.c ****   } while((HSEStatus == 0) && (StartUpCounter != HSE_STARTUP_TIMEOUT));
+ 898:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 899:Drivers/CMSIS/Source/system_stm32f10x.c ****   if ((RCC->CR & RCC_CR_HSERDY) != RESET)
+ 900:Drivers/CMSIS/Source/system_stm32f10x.c ****   {
+ 901:Drivers/CMSIS/Source/system_stm32f10x.c ****     HSEStatus = (uint32_t)0x01;
+ 902:Drivers/CMSIS/Source/system_stm32f10x.c ****   }
+ 903:Drivers/CMSIS/Source/system_stm32f10x.c ****   else
+ 904:Drivers/CMSIS/Source/system_stm32f10x.c ****   {
+ 905:Drivers/CMSIS/Source/system_stm32f10x.c ****     HSEStatus = (uint32_t)0x00;
+ 906:Drivers/CMSIS/Source/system_stm32f10x.c ****   }  
+ 907:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 908:Drivers/CMSIS/Source/system_stm32f10x.c ****   if (HSEStatus == (uint32_t)0x01)
+ 909:Drivers/CMSIS/Source/system_stm32f10x.c ****   {
+ 910:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Enable Prefetch Buffer */
+ 911:Drivers/CMSIS/Source/system_stm32f10x.c ****     FLASH->ACR |= FLASH_ACR_PRFTBE;
+ 912:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 913:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Flash 2 wait state */
+ 914:Drivers/CMSIS/Source/system_stm32f10x.c ****     FLASH->ACR &= (uint32_t)((uint32_t)~FLASH_ACR_LATENCY);
+ 915:Drivers/CMSIS/Source/system_stm32f10x.c ****     FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_2;    
+ 916:Drivers/CMSIS/Source/system_stm32f10x.c ****  
+ 917:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* HCLK = SYSCLK */
+ 918:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_HPRE_DIV1;
+ 919:Drivers/CMSIS/Source/system_stm32f10x.c ****       
+ 920:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* PCLK2 = HCLK */
+ 921:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE2_DIV1;
+ 922:Drivers/CMSIS/Source/system_stm32f10x.c ****     
+ 923:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* PCLK1 = HCLK */
+ 924:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE1_DIV2;
+ 925:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 926:Drivers/CMSIS/Source/system_stm32f10x.c **** #ifdef STM32F10X_CL
+ 927:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Configure PLLs ------------------------------------------------------*/
+ 928:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* PLL2 configuration: PLL2CLK = (HSE / 5) * 8 = 40 MHz */
+ 929:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* PREDIV1 configuration: PREDIV1CLK = PLL2 / 5 = 8 MHz */
+ 930:Drivers/CMSIS/Source/system_stm32f10x.c ****         
+ 931:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR2 &= (uint32_t)~(RCC_CFGR2_PREDIV2 | RCC_CFGR2_PLL2MUL |
+ 932:Drivers/CMSIS/Source/system_stm32f10x.c ****                               RCC_CFGR2_PREDIV1 | RCC_CFGR2_PREDIV1SRC);
+ 933:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR2 |= (uint32_t)(RCC_CFGR2_PREDIV2_DIV5 | RCC_CFGR2_PLL2MUL8 |
+ 934:Drivers/CMSIS/Source/system_stm32f10x.c ****                              RCC_CFGR2_PREDIV1SRC_PLL2 | RCC_CFGR2_PREDIV1_DIV5);
+ 935:Drivers/CMSIS/Source/system_stm32f10x.c ****   
+ 936:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Enable PLL2 */
+ 937:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CR |= RCC_CR_PLL2ON;
+ 938:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Wait till PLL2 is ready */
+ 939:Drivers/CMSIS/Source/system_stm32f10x.c ****     while((RCC->CR & RCC_CR_PLL2RDY) == 0)
+ 940:Drivers/CMSIS/Source/system_stm32f10x.c ****     {
+ 941:Drivers/CMSIS/Source/system_stm32f10x.c ****     }
+ 942:Drivers/CMSIS/Source/system_stm32f10x.c ****     
+ 943:Drivers/CMSIS/Source/system_stm32f10x.c ****    
+ 944:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* PLL configuration: PLLCLK = PREDIV1 * 7 = 56 MHz */ 
+ 945:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)~(RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLSRC | RCC_CFGR_PLLMULL);
+ARM GAS  C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s 			page 18
+
+
+ 946:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLXTPRE_PREDIV1 | RCC_CFGR_PLLSRC_PREDIV1 | 
+ 947:Drivers/CMSIS/Source/system_stm32f10x.c ****                             RCC_CFGR_PLLMULL7); 
+ 948:Drivers/CMSIS/Source/system_stm32f10x.c **** #else     
+ 949:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* PLL configuration: PLLCLK = HSE * 7 = 56 MHz */
+ 950:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_PLLSRC | RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLMULL));
+ 951:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLSRC_HSE | RCC_CFGR_PLLMULL7);
+ 952:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 953:Drivers/CMSIS/Source/system_stm32f10x.c **** #endif /* STM32F10X_CL */
+ 954:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 955:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Enable PLL */
+ 956:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CR |= RCC_CR_PLLON;
+ 957:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 958:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Wait till PLL is ready */
+ 959:Drivers/CMSIS/Source/system_stm32f10x.c ****     while((RCC->CR & RCC_CR_PLLRDY) == 0)
+ 960:Drivers/CMSIS/Source/system_stm32f10x.c ****     {
+ 961:Drivers/CMSIS/Source/system_stm32f10x.c ****     }
+ 962:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 963:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Select PLL as system clock source */
+ 964:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_SW));
+ 965:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_SW_PLL;    
+ 966:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 967:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Wait till PLL is used as system clock source */
+ 968:Drivers/CMSIS/Source/system_stm32f10x.c ****     while ((RCC->CFGR & (uint32_t)RCC_CFGR_SWS) != (uint32_t)0x08)
+ 969:Drivers/CMSIS/Source/system_stm32f10x.c ****     {
+ 970:Drivers/CMSIS/Source/system_stm32f10x.c ****     }
+ 971:Drivers/CMSIS/Source/system_stm32f10x.c ****   }
+ 972:Drivers/CMSIS/Source/system_stm32f10x.c ****   else
+ 973:Drivers/CMSIS/Source/system_stm32f10x.c ****   { /* If HSE fails to start-up, the application will have wrong clock 
+ 974:Drivers/CMSIS/Source/system_stm32f10x.c ****          configuration. User can add here some code to deal with this error */
+ 975:Drivers/CMSIS/Source/system_stm32f10x.c ****   } 
+ 976:Drivers/CMSIS/Source/system_stm32f10x.c **** }
+ 977:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 978:Drivers/CMSIS/Source/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_72MHz
+ 979:Drivers/CMSIS/Source/system_stm32f10x.c **** /**
+ 980:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @brief  Sets System clock frequency to 72MHz and configure HCLK, PCLK2 
+ 981:Drivers/CMSIS/Source/system_stm32f10x.c ****   *         and PCLK1 prescalers. 
+ 982:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @note   This function should be used only after reset.
+ 983:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @param  None
+ 984:Drivers/CMSIS/Source/system_stm32f10x.c ****   * @retval None
+ 985:Drivers/CMSIS/Source/system_stm32f10x.c ****   */
+ 986:Drivers/CMSIS/Source/system_stm32f10x.c **** static void SetSysClockTo72(void)
+ 987:Drivers/CMSIS/Source/system_stm32f10x.c **** {
+  26              		.loc 1 987 1 view -0
+  27              		.cfi_startproc
+  28              		@ args = 0, pretend = 0, frame = 8
+  29              		@ frame_needed = 0, uses_anonymous_args = 0
+  30              		@ link register save eliminated.
+  31 0000 82B0     		sub	sp, sp, #8
+  32              	.LCFI0:
+  33              		.cfi_def_cfa_offset 8
+ 988:Drivers/CMSIS/Source/system_stm32f10x.c ****   __IO uint32_t StartUpCounter = 0, HSEStatus = 0;
+  34              		.loc 1 988 3 view .LVU1
+  35              		.loc 1 988 17 is_stmt 0 view .LVU2
+  36 0002 0023     		movs	r3, #0
+  37 0004 0193     		str	r3, [sp, #4]
+  38              		.loc 1 988 37 view .LVU3
+  39 0006 0093     		str	r3, [sp]
+ARM GAS  C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s 			page 19
+
+
+ 989:Drivers/CMSIS/Source/system_stm32f10x.c ****   
+ 990:Drivers/CMSIS/Source/system_stm32f10x.c ****   /* SYSCLK, HCLK, PCLK2 and PCLK1 configuration ---------------------------*/    
+ 991:Drivers/CMSIS/Source/system_stm32f10x.c ****   /* Enable HSE */    
+ 992:Drivers/CMSIS/Source/system_stm32f10x.c ****   RCC->CR |= ((uint32_t)RCC_CR_HSEON);
+  40              		.loc 1 992 3 is_stmt 1 view .LVU4
+  41              		.loc 1 992 11 is_stmt 0 view .LVU5
+  42 0008 2C4A     		ldr	r2, .L11
+  43 000a 1368     		ldr	r3, [r2]
+  44 000c 43F48033 		orr	r3, r3, #65536
+  45 0010 1360     		str	r3, [r2]
+  46              	.L3:
+ 993:Drivers/CMSIS/Source/system_stm32f10x.c ****  
+ 994:Drivers/CMSIS/Source/system_stm32f10x.c ****   /* Wait till HSE is ready and if Time out is reached exit */
+ 995:Drivers/CMSIS/Source/system_stm32f10x.c ****   do
+  47              		.loc 1 995 3 is_stmt 1 discriminator 2 view .LVU6
+ 996:Drivers/CMSIS/Source/system_stm32f10x.c ****   {
+ 997:Drivers/CMSIS/Source/system_stm32f10x.c ****     HSEStatus = RCC->CR & RCC_CR_HSERDY;
+  48              		.loc 1 997 5 discriminator 2 view .LVU7
+  49              		.loc 1 997 20 is_stmt 0 discriminator 2 view .LVU8
+  50 0012 2A4B     		ldr	r3, .L11
+  51 0014 1B68     		ldr	r3, [r3]
+  52              		.loc 1 997 25 discriminator 2 view .LVU9
+  53 0016 03F40033 		and	r3, r3, #131072
+  54              		.loc 1 997 15 discriminator 2 view .LVU10
+  55 001a 0093     		str	r3, [sp]
+ 998:Drivers/CMSIS/Source/system_stm32f10x.c ****     StartUpCounter++;  
+  56              		.loc 1 998 5 is_stmt 1 discriminator 2 view .LVU11
+  57              		.loc 1 998 19 is_stmt 0 discriminator 2 view .LVU12
+  58 001c 019B     		ldr	r3, [sp, #4]
+  59 001e 0133     		adds	r3, r3, #1
+  60 0020 0193     		str	r3, [sp, #4]
+ 999:Drivers/CMSIS/Source/system_stm32f10x.c ****   } while((HSEStatus == 0) && (StartUpCounter != HSE_STARTUP_TIMEOUT));
+  61              		.loc 1 999 10 is_stmt 1 discriminator 2 view .LVU13
+  62              		.loc 1 999 22 is_stmt 0 discriminator 2 view .LVU14
+  63 0022 009B     		ldr	r3, [sp]
+  64              		.loc 1 999 3 discriminator 2 view .LVU15
+  65 0024 1BB9     		cbnz	r3, .L2
+  66              		.loc 1 999 47 discriminator 1 view .LVU16
+  67 0026 019B     		ldr	r3, [sp, #4]
+  68              		.loc 1 999 28 discriminator 1 view .LVU17
+  69 0028 B3F5A06F 		cmp	r3, #1280
+  70 002c F1D1     		bne	.L3
+  71              	.L2:
+1000:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+1001:Drivers/CMSIS/Source/system_stm32f10x.c ****   if ((RCC->CR & RCC_CR_HSERDY) != RESET)
+  72              		.loc 1 1001 3 is_stmt 1 view .LVU18
+  73              		.loc 1 1001 11 is_stmt 0 view .LVU19
+  74 002e 234B     		ldr	r3, .L11
+  75 0030 1B68     		ldr	r3, [r3]
+  76              		.loc 1 1001 6 view .LVU20
+  77 0032 13F4003F 		tst	r3, #131072
+  78 0036 06D0     		beq	.L4
+1002:Drivers/CMSIS/Source/system_stm32f10x.c ****   {
+1003:Drivers/CMSIS/Source/system_stm32f10x.c ****     HSEStatus = (uint32_t)0x01;
+  79              		.loc 1 1003 5 is_stmt 1 view .LVU21
+  80              		.loc 1 1003 15 is_stmt 0 view .LVU22
+  81 0038 0123     		movs	r3, #1
+ARM GAS  C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s 			page 20
+
+
+  82 003a 0093     		str	r3, [sp]
+  83              	.L5:
+1004:Drivers/CMSIS/Source/system_stm32f10x.c ****   }
+1005:Drivers/CMSIS/Source/system_stm32f10x.c ****   else
+1006:Drivers/CMSIS/Source/system_stm32f10x.c ****   {
+1007:Drivers/CMSIS/Source/system_stm32f10x.c ****     HSEStatus = (uint32_t)0x00;
+1008:Drivers/CMSIS/Source/system_stm32f10x.c ****   }  
+1009:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+1010:Drivers/CMSIS/Source/system_stm32f10x.c ****   if (HSEStatus == (uint32_t)0x01)
+  84              		.loc 1 1010 3 is_stmt 1 view .LVU23
+  85              		.loc 1 1010 17 is_stmt 0 view .LVU24
+  86 003c 009B     		ldr	r3, [sp]
+  87              		.loc 1 1010 6 view .LVU25
+  88 003e 012B     		cmp	r3, #1
+  89 0040 04D0     		beq	.L10
+  90              	.L1:
+1011:Drivers/CMSIS/Source/system_stm32f10x.c ****   {
+1012:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Enable Prefetch Buffer */
+1013:Drivers/CMSIS/Source/system_stm32f10x.c ****     FLASH->ACR |= FLASH_ACR_PRFTBE;
+1014:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+1015:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Flash 2 wait state */
+1016:Drivers/CMSIS/Source/system_stm32f10x.c ****     FLASH->ACR &= (uint32_t)((uint32_t)~FLASH_ACR_LATENCY);
+1017:Drivers/CMSIS/Source/system_stm32f10x.c ****     FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_2;    
+1018:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+1019:Drivers/CMSIS/Source/system_stm32f10x.c ****  
+1020:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* HCLK = SYSCLK */
+1021:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_HPRE_DIV1;
+1022:Drivers/CMSIS/Source/system_stm32f10x.c ****       
+1023:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* PCLK2 = HCLK */
+1024:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE2_DIV1;
+1025:Drivers/CMSIS/Source/system_stm32f10x.c ****     
+1026:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* PCLK1 = HCLK */
+1027:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE1_DIV2;
+1028:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+1029:Drivers/CMSIS/Source/system_stm32f10x.c **** #ifdef STM32F10X_CL
+1030:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Configure PLLs ------------------------------------------------------*/
+1031:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* PLL2 configuration: PLL2CLK = (HSE / 5) * 8 = 40 MHz */
+1032:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* PREDIV1 configuration: PREDIV1CLK = PLL2 / 5 = 8 MHz */
+1033:Drivers/CMSIS/Source/system_stm32f10x.c ****         
+1034:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR2 &= (uint32_t)~(RCC_CFGR2_PREDIV2 | RCC_CFGR2_PLL2MUL |
+1035:Drivers/CMSIS/Source/system_stm32f10x.c ****                               RCC_CFGR2_PREDIV1 | RCC_CFGR2_PREDIV1SRC);
+1036:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR2 |= (uint32_t)(RCC_CFGR2_PREDIV2_DIV5 | RCC_CFGR2_PLL2MUL8 |
+1037:Drivers/CMSIS/Source/system_stm32f10x.c ****                              RCC_CFGR2_PREDIV1SRC_PLL2 | RCC_CFGR2_PREDIV1_DIV5);
+1038:Drivers/CMSIS/Source/system_stm32f10x.c ****   
+1039:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Enable PLL2 */
+1040:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CR |= RCC_CR_PLL2ON;
+1041:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Wait till PLL2 is ready */
+1042:Drivers/CMSIS/Source/system_stm32f10x.c ****     while((RCC->CR & RCC_CR_PLL2RDY) == 0)
+1043:Drivers/CMSIS/Source/system_stm32f10x.c ****     {
+1044:Drivers/CMSIS/Source/system_stm32f10x.c ****     }
+1045:Drivers/CMSIS/Source/system_stm32f10x.c ****     
+1046:Drivers/CMSIS/Source/system_stm32f10x.c ****    
+1047:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* PLL configuration: PLLCLK = PREDIV1 * 9 = 72 MHz */ 
+1048:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)~(RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLSRC | RCC_CFGR_PLLMULL);
+1049:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLXTPRE_PREDIV1 | RCC_CFGR_PLLSRC_PREDIV1 | 
+1050:Drivers/CMSIS/Source/system_stm32f10x.c ****                             RCC_CFGR_PLLMULL9); 
+1051:Drivers/CMSIS/Source/system_stm32f10x.c **** #else    
+ARM GAS  C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s 			page 21
+
+
+1052:Drivers/CMSIS/Source/system_stm32f10x.c ****     /*  PLL configuration: PLLCLK = HSE * 9 = 72 MHz */
+1053:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_PLLSRC | RCC_CFGR_PLLXTPRE |
+1054:Drivers/CMSIS/Source/system_stm32f10x.c ****                                         RCC_CFGR_PLLMULL));
+1055:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLSRC_HSE | RCC_CFGR_PLLMULL9);
+1056:Drivers/CMSIS/Source/system_stm32f10x.c **** #endif /* STM32F10X_CL */
+1057:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+1058:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Enable PLL */
+1059:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CR |= RCC_CR_PLLON;
+1060:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+1061:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Wait till PLL is ready */
+1062:Drivers/CMSIS/Source/system_stm32f10x.c ****     while((RCC->CR & RCC_CR_PLLRDY) == 0)
+1063:Drivers/CMSIS/Source/system_stm32f10x.c ****     {
+1064:Drivers/CMSIS/Source/system_stm32f10x.c ****     }
+1065:Drivers/CMSIS/Source/system_stm32f10x.c ****     
+1066:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Select PLL as system clock source */
+1067:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_SW));
+1068:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_SW_PLL;    
+1069:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+1070:Drivers/CMSIS/Source/system_stm32f10x.c ****     /* Wait till PLL is used as system clock source */
+1071:Drivers/CMSIS/Source/system_stm32f10x.c ****     while ((RCC->CFGR & (uint32_t)RCC_CFGR_SWS) != (uint32_t)0x08)
+1072:Drivers/CMSIS/Source/system_stm32f10x.c ****     {
+1073:Drivers/CMSIS/Source/system_stm32f10x.c ****     }
+1074:Drivers/CMSIS/Source/system_stm32f10x.c ****   }
+1075:Drivers/CMSIS/Source/system_stm32f10x.c ****   else
+1076:Drivers/CMSIS/Source/system_stm32f10x.c ****   { /* If HSE fails to start-up, the application will have wrong clock 
+1077:Drivers/CMSIS/Source/system_stm32f10x.c ****          configuration. User can add here some code to deal with this error */
+1078:Drivers/CMSIS/Source/system_stm32f10x.c ****   }
+1079:Drivers/CMSIS/Source/system_stm32f10x.c **** }
+  91              		.loc 1 1079 1 view .LVU26
+  92 0042 02B0     		add	sp, sp, #8
+  93              	.LCFI1:
+  94              		.cfi_remember_state
+  95              		.cfi_def_cfa_offset 0
+  96              		@ sp needed
+  97 0044 7047     		bx	lr
+  98              	.L4:
+  99              	.LCFI2:
+ 100              		.cfi_restore_state
+1007:Drivers/CMSIS/Source/system_stm32f10x.c ****   }  
+ 101              		.loc 1 1007 5 is_stmt 1 view .LVU27
+1007:Drivers/CMSIS/Source/system_stm32f10x.c ****   }  
+ 102              		.loc 1 1007 15 is_stmt 0 view .LVU28
+ 103 0046 0023     		movs	r3, #0
+ 104 0048 0093     		str	r3, [sp]
+ 105 004a F7E7     		b	.L5
+ 106              	.L10:
+1013:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 107              		.loc 1 1013 5 is_stmt 1 view .LVU29
+1013:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 108              		.loc 1 1013 16 is_stmt 0 view .LVU30
+ 109 004c 1C4B     		ldr	r3, .L11+4
+ 110 004e 1A68     		ldr	r2, [r3]
+ 111 0050 42F01002 		orr	r2, r2, #16
+ 112 0054 1A60     		str	r2, [r3]
+1016:Drivers/CMSIS/Source/system_stm32f10x.c ****     FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_2;    
+ 113              		.loc 1 1016 5 is_stmt 1 view .LVU31
+1016:Drivers/CMSIS/Source/system_stm32f10x.c ****     FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_2;    
+ARM GAS  C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s 			page 22
+
+
+ 114              		.loc 1 1016 16 is_stmt 0 view .LVU32
+ 115 0056 1A68     		ldr	r2, [r3]
+ 116 0058 22F00702 		bic	r2, r2, #7
+ 117 005c 1A60     		str	r2, [r3]
+1017:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 118              		.loc 1 1017 5 is_stmt 1 view .LVU33
+1017:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 119              		.loc 1 1017 16 is_stmt 0 view .LVU34
+ 120 005e 1A68     		ldr	r2, [r3]
+ 121 0060 42F00202 		orr	r2, r2, #2
+ 122 0064 1A60     		str	r2, [r3]
+1021:Drivers/CMSIS/Source/system_stm32f10x.c ****       
+ 123              		.loc 1 1021 5 is_stmt 1 view .LVU35
+1021:Drivers/CMSIS/Source/system_stm32f10x.c ****       
+ 124              		.loc 1 1021 15 is_stmt 0 view .LVU36
+ 125 0066 A3F58053 		sub	r3, r3, #4096
+ 126 006a 5A68     		ldr	r2, [r3, #4]
+ 127 006c 5A60     		str	r2, [r3, #4]
+1024:Drivers/CMSIS/Source/system_stm32f10x.c ****     
+ 128              		.loc 1 1024 5 is_stmt 1 view .LVU37
+1024:Drivers/CMSIS/Source/system_stm32f10x.c ****     
+ 129              		.loc 1 1024 15 is_stmt 0 view .LVU38
+ 130 006e 5A68     		ldr	r2, [r3, #4]
+ 131 0070 5A60     		str	r2, [r3, #4]
+1027:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 132              		.loc 1 1027 5 is_stmt 1 view .LVU39
+1027:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 133              		.loc 1 1027 15 is_stmt 0 view .LVU40
+ 134 0072 5A68     		ldr	r2, [r3, #4]
+ 135 0074 42F48062 		orr	r2, r2, #1024
+ 136 0078 5A60     		str	r2, [r3, #4]
+1053:Drivers/CMSIS/Source/system_stm32f10x.c ****                                         RCC_CFGR_PLLMULL));
+ 137              		.loc 1 1053 5 is_stmt 1 view .LVU41
+1053:Drivers/CMSIS/Source/system_stm32f10x.c ****                                         RCC_CFGR_PLLMULL));
+ 138              		.loc 1 1053 15 is_stmt 0 view .LVU42
+ 139 007a 5A68     		ldr	r2, [r3, #4]
+ 140 007c 22F47C12 		bic	r2, r2, #4128768
+ 141 0080 5A60     		str	r2, [r3, #4]
+1055:Drivers/CMSIS/Source/system_stm32f10x.c **** #endif /* STM32F10X_CL */
+ 142              		.loc 1 1055 5 is_stmt 1 view .LVU43
+1055:Drivers/CMSIS/Source/system_stm32f10x.c **** #endif /* STM32F10X_CL */
+ 143              		.loc 1 1055 15 is_stmt 0 view .LVU44
+ 144 0082 5A68     		ldr	r2, [r3, #4]
+ 145 0084 42F4E812 		orr	r2, r2, #1900544
+ 146 0088 5A60     		str	r2, [r3, #4]
+1059:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 147              		.loc 1 1059 5 is_stmt 1 view .LVU45
+1059:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 148              		.loc 1 1059 13 is_stmt 0 view .LVU46
+ 149 008a 1A68     		ldr	r2, [r3]
+ 150 008c 42F08072 		orr	r2, r2, #16777216
+ 151 0090 1A60     		str	r2, [r3]
+1062:Drivers/CMSIS/Source/system_stm32f10x.c ****     {
+ 152              		.loc 1 1062 5 is_stmt 1 view .LVU47
+ 153              	.L7:
+1064:Drivers/CMSIS/Source/system_stm32f10x.c ****     
+ 154              		.loc 1 1064 5 discriminator 1 view .LVU48
+ARM GAS  C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s 			page 23
+
+
+1062:Drivers/CMSIS/Source/system_stm32f10x.c ****     {
+ 155              		.loc 1 1062 10 discriminator 1 view .LVU49
+1062:Drivers/CMSIS/Source/system_stm32f10x.c ****     {
+ 156              		.loc 1 1062 15 is_stmt 0 discriminator 1 view .LVU50
+ 157 0092 0A4B     		ldr	r3, .L11
+ 158 0094 1B68     		ldr	r3, [r3]
+1062:Drivers/CMSIS/Source/system_stm32f10x.c ****     {
+ 159              		.loc 1 1062 10 discriminator 1 view .LVU51
+ 160 0096 13F0007F 		tst	r3, #33554432
+ 161 009a FAD0     		beq	.L7
+1067:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_SW_PLL;    
+ 162              		.loc 1 1067 5 is_stmt 1 view .LVU52
+1067:Drivers/CMSIS/Source/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_SW_PLL;    
+ 163              		.loc 1 1067 15 is_stmt 0 view .LVU53
+ 164 009c 074B     		ldr	r3, .L11
+ 165 009e 5A68     		ldr	r2, [r3, #4]
+ 166 00a0 22F00302 		bic	r2, r2, #3
+ 167 00a4 5A60     		str	r2, [r3, #4]
+1068:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 168              		.loc 1 1068 5 is_stmt 1 view .LVU54
+1068:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 169              		.loc 1 1068 15 is_stmt 0 view .LVU55
+ 170 00a6 5A68     		ldr	r2, [r3, #4]
+ 171 00a8 42F00202 		orr	r2, r2, #2
+ 172 00ac 5A60     		str	r2, [r3, #4]
+1071:Drivers/CMSIS/Source/system_stm32f10x.c ****     {
+ 173              		.loc 1 1071 5 is_stmt 1 view .LVU56
+ 174              	.L8:
+1073:Drivers/CMSIS/Source/system_stm32f10x.c ****   }
+ 175              		.loc 1 1073 5 discriminator 1 view .LVU57
+1071:Drivers/CMSIS/Source/system_stm32f10x.c ****     {
+ 176              		.loc 1 1071 11 discriminator 1 view .LVU58
+1071:Drivers/CMSIS/Source/system_stm32f10x.c ****     {
+ 177              		.loc 1 1071 16 is_stmt 0 discriminator 1 view .LVU59
+ 178 00ae 034B     		ldr	r3, .L11
+ 179 00b0 5B68     		ldr	r3, [r3, #4]
+1071:Drivers/CMSIS/Source/system_stm32f10x.c ****     {
+ 180              		.loc 1 1071 23 discriminator 1 view .LVU60
+ 181 00b2 03F00C03 		and	r3, r3, #12
+1071:Drivers/CMSIS/Source/system_stm32f10x.c ****     {
+ 182              		.loc 1 1071 11 discriminator 1 view .LVU61
+ 183 00b6 082B     		cmp	r3, #8
+ 184 00b8 F9D1     		bne	.L8
+ 185 00ba C2E7     		b	.L1
+ 186              	.L12:
+ 187              		.align	2
+ 188              	.L11:
+ 189 00bc 00100240 		.word	1073876992
+ 190 00c0 00200240 		.word	1073881088
+ 191              		.cfi_endproc
+ 192              	.LFE32:
+ 194              		.section	.text.SetSysClock,"ax",%progbits
+ 195              		.align	1
+ 196              		.syntax unified
+ 197              		.thumb
+ 198              		.thumb_func
+ 200              	SetSysClock:
+ARM GAS  C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s 			page 24
+
+
+ 201              	.LFB31:
+ 419:Drivers/CMSIS/Source/system_stm32f10x.c **** #ifdef SYSCLK_FREQ_HSE
+ 202              		.loc 1 419 1 is_stmt 1 view -0
+ 203              		.cfi_startproc
+ 204              		@ args = 0, pretend = 0, frame = 0
+ 205              		@ frame_needed = 0, uses_anonymous_args = 0
+ 206 0000 08B5     		push	{r3, lr}
+ 207              	.LCFI3:
+ 208              		.cfi_def_cfa_offset 8
+ 209              		.cfi_offset 3, -8
+ 210              		.cfi_offset 14, -4
+ 431:Drivers/CMSIS/Source/system_stm32f10x.c **** #endif
+ 211              		.loc 1 431 3 view .LVU63
+ 212 0002 FFF7FEFF 		bl	SetSysClockTo72
+ 213              	.LVL0:
+ 436:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 214              		.loc 1 436 1 is_stmt 0 view .LVU64
+ 215 0006 08BD     		pop	{r3, pc}
+ 216              		.cfi_endproc
+ 217              	.LFE31:
+ 219              		.section	.text.SystemInit,"ax",%progbits
+ 220              		.align	1
+ 221              		.global	SystemInit
+ 222              		.syntax unified
+ 223              		.thumb
+ 224              		.thumb_func
+ 226              	SystemInit:
+ 227              	.LFB29:
+ 212:Drivers/CMSIS/Source/system_stm32f10x.c ****   /* Reset the RCC clock configuration to the default reset state(for debug purpose) */
+ 228              		.loc 1 212 1 is_stmt 1 view -0
+ 229              		.cfi_startproc
+ 230              		@ args = 0, pretend = 0, frame = 0
+ 231              		@ frame_needed = 0, uses_anonymous_args = 0
+ 232 0000 08B5     		push	{r3, lr}
+ 233              	.LCFI4:
+ 234              		.cfi_def_cfa_offset 8
+ 235              		.cfi_offset 3, -8
+ 236              		.cfi_offset 14, -4
+ 215:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 237              		.loc 1 215 3 view .LVU66
+ 215:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 238              		.loc 1 215 11 is_stmt 0 view .LVU67
+ 239 0002 104B     		ldr	r3, .L17
+ 240 0004 1A68     		ldr	r2, [r3]
+ 241 0006 42F00102 		orr	r2, r2, #1
+ 242 000a 1A60     		str	r2, [r3]
+ 219:Drivers/CMSIS/Source/system_stm32f10x.c **** #else
+ 243              		.loc 1 219 3 is_stmt 1 view .LVU68
+ 219:Drivers/CMSIS/Source/system_stm32f10x.c **** #else
+ 244              		.loc 1 219 13 is_stmt 0 view .LVU69
+ 245 000c 5968     		ldr	r1, [r3, #4]
+ 246 000e 0E4A     		ldr	r2, .L17+4
+ 247 0010 0A40     		ands	r2, r2, r1
+ 248 0012 5A60     		str	r2, [r3, #4]
+ 225:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 249              		.loc 1 225 3 is_stmt 1 view .LVU70
+ 225:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ARM GAS  C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s 			page 25
+
+
+ 250              		.loc 1 225 11 is_stmt 0 view .LVU71
+ 251 0014 1A68     		ldr	r2, [r3]
+ 252 0016 22F08472 		bic	r2, r2, #17301504
+ 253 001a 22F48032 		bic	r2, r2, #65536
+ 254 001e 1A60     		str	r2, [r3]
+ 228:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 255              		.loc 1 228 3 is_stmt 1 view .LVU72
+ 228:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 256              		.loc 1 228 11 is_stmt 0 view .LVU73
+ 257 0020 1A68     		ldr	r2, [r3]
+ 258 0022 22F48022 		bic	r2, r2, #262144
+ 259 0026 1A60     		str	r2, [r3]
+ 231:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 260              		.loc 1 231 3 is_stmt 1 view .LVU74
+ 231:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 261              		.loc 1 231 13 is_stmt 0 view .LVU75
+ 262 0028 5A68     		ldr	r2, [r3, #4]
+ 263 002a 22F4FE02 		bic	r2, r2, #8323072
+ 264 002e 5A60     		str	r2, [r3, #4]
+ 250:Drivers/CMSIS/Source/system_stm32f10x.c **** #endif /* STM32F10X_CL */
+ 265              		.loc 1 250 3 is_stmt 1 view .LVU76
+ 250:Drivers/CMSIS/Source/system_stm32f10x.c **** #endif /* STM32F10X_CL */
+ 266              		.loc 1 250 12 is_stmt 0 view .LVU77
+ 267 0030 4FF41F02 		mov	r2, #10420224
+ 268 0034 9A60     		str	r2, [r3, #8]
+ 261:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 269              		.loc 1 261 3 is_stmt 1 view .LVU78
+ 270 0036 FFF7FEFF 		bl	SetSysClock
+ 271              	.LVL1:
+ 266:Drivers/CMSIS/Source/system_stm32f10x.c **** #endif 
+ 272              		.loc 1 266 3 view .LVU79
+ 266:Drivers/CMSIS/Source/system_stm32f10x.c **** #endif 
+ 273              		.loc 1 266 13 is_stmt 0 view .LVU80
+ 274 003a 044B     		ldr	r3, .L17+8
+ 275 003c 4FF00062 		mov	r2, #134217728
+ 276 0040 9A60     		str	r2, [r3, #8]
+ 268:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 277              		.loc 1 268 1 view .LVU81
+ 278 0042 08BD     		pop	{r3, pc}
+ 279              	.L18:
+ 280              		.align	2
+ 281              	.L17:
+ 282 0044 00100240 		.word	1073876992
+ 283 0048 0000FFF8 		.word	-117506048
+ 284 004c 00ED00E0 		.word	-536810240
+ 285              		.cfi_endproc
+ 286              	.LFE29:
+ 288              		.section	.text.SystemCoreClockUpdate,"ax",%progbits
+ 289              		.align	1
+ 290              		.global	SystemCoreClockUpdate
+ 291              		.syntax unified
+ 292              		.thumb
+ 293              		.thumb_func
+ 295              	SystemCoreClockUpdate:
+ 296              	.LFB30:
+ 306:Drivers/CMSIS/Source/system_stm32f10x.c ****   uint32_t tmp = 0, pllmull = 0, pllsource = 0;
+ 297              		.loc 1 306 1 is_stmt 1 view -0
+ARM GAS  C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s 			page 26
+
+
+ 298              		.cfi_startproc
+ 299              		@ args = 0, pretend = 0, frame = 0
+ 300              		@ frame_needed = 0, uses_anonymous_args = 0
+ 301              		@ link register save eliminated.
+ 307:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 302              		.loc 1 307 3 view .LVU83
+ 303              	.LVL2:
+ 318:Drivers/CMSIS/Source/system_stm32f10x.c ****   
+ 304              		.loc 1 318 3 view .LVU84
+ 318:Drivers/CMSIS/Source/system_stm32f10x.c ****   
+ 305              		.loc 1 318 12 is_stmt 0 view .LVU85
+ 306 0000 1F4B     		ldr	r3, .L27
+ 307 0002 5B68     		ldr	r3, [r3, #4]
+ 318:Drivers/CMSIS/Source/system_stm32f10x.c ****   
+ 308              		.loc 1 318 7 view .LVU86
+ 309 0004 03F00C03 		and	r3, r3, #12
+ 310              	.LVL3:
+ 320:Drivers/CMSIS/Source/system_stm32f10x.c ****   {
+ 311              		.loc 1 320 3 is_stmt 1 view .LVU87
+ 312 0008 042B     		cmp	r3, #4
+ 313 000a 15D0     		beq	.L20
+ 314 000c 082B     		cmp	r3, #8
+ 315 000e 17D0     		beq	.L21
+ 316 0010 1BB1     		cbz	r3, .L26
+ 402:Drivers/CMSIS/Source/system_stm32f10x.c ****       break;
+ 317              		.loc 1 402 7 view .LVU88
+ 402:Drivers/CMSIS/Source/system_stm32f10x.c ****       break;
+ 318              		.loc 1 402 23 is_stmt 0 view .LVU89
+ 319 0012 1C4B     		ldr	r3, .L27+4
+ 320              	.LVL4:
+ 402:Drivers/CMSIS/Source/system_stm32f10x.c ****       break;
+ 321              		.loc 1 402 23 view .LVU90
+ 322 0014 1C4A     		ldr	r2, .L27+8
+ 323 0016 1A60     		str	r2, [r3]
+ 403:Drivers/CMSIS/Source/system_stm32f10x.c ****   }
+ 324              		.loc 1 403 7 is_stmt 1 view .LVU91
+ 325 0018 02E0     		b	.L23
+ 326              	.LVL5:
+ 327              	.L26:
+ 323:Drivers/CMSIS/Source/system_stm32f10x.c ****       break;
+ 328              		.loc 1 323 7 view .LVU92
+ 323:Drivers/CMSIS/Source/system_stm32f10x.c ****       break;
+ 329              		.loc 1 323 23 is_stmt 0 view .LVU93
+ 330 001a 1A4B     		ldr	r3, .L27+4
+ 331              	.LVL6:
+ 323:Drivers/CMSIS/Source/system_stm32f10x.c ****       break;
+ 332              		.loc 1 323 23 view .LVU94
+ 333 001c 1A4A     		ldr	r2, .L27+8
+ 334 001e 1A60     		str	r2, [r3]
+ 324:Drivers/CMSIS/Source/system_stm32f10x.c ****     case 0x04:  /* HSE used as system clock */
+ 335              		.loc 1 324 7 is_stmt 1 view .LVU95
+ 336              	.LVL7:
+ 337              	.L23:
+ 408:Drivers/CMSIS/Source/system_stm32f10x.c ****   /* HCLK clock frequency */
+ 338              		.loc 1 408 3 view .LVU96
+ 408:Drivers/CMSIS/Source/system_stm32f10x.c ****   /* HCLK clock frequency */
+ 339              		.loc 1 408 28 is_stmt 0 view .LVU97
+ARM GAS  C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s 			page 27
+
+
+ 340 0020 174B     		ldr	r3, .L27
+ 341 0022 5B68     		ldr	r3, [r3, #4]
+ 408:Drivers/CMSIS/Source/system_stm32f10x.c ****   /* HCLK clock frequency */
+ 342              		.loc 1 408 52 view .LVU98
+ 343 0024 C3F30313 		ubfx	r3, r3, #4, #4
+ 408:Drivers/CMSIS/Source/system_stm32f10x.c ****   /* HCLK clock frequency */
+ 344              		.loc 1 408 22 view .LVU99
+ 345 0028 184A     		ldr	r2, .L27+12
+ 346 002a D35C     		ldrb	r3, [r2, r3]	@ zero_extendqisi2
+ 347 002c DAB2     		uxtb	r2, r3
+ 348              	.LVL8:
+ 410:Drivers/CMSIS/Source/system_stm32f10x.c **** }
+ 349              		.loc 1 410 3 is_stmt 1 view .LVU100
+ 410:Drivers/CMSIS/Source/system_stm32f10x.c **** }
+ 350              		.loc 1 410 19 is_stmt 0 view .LVU101
+ 351 002e 1549     		ldr	r1, .L27+4
+ 352 0030 0B68     		ldr	r3, [r1]
+ 353 0032 D340     		lsrs	r3, r3, r2
+ 354 0034 0B60     		str	r3, [r1]
+ 411:Drivers/CMSIS/Source/system_stm32f10x.c **** 
+ 355              		.loc 1 411 1 view .LVU102
+ 356 0036 7047     		bx	lr
+ 357              	.LVL9:
+ 358              	.L20:
+ 326:Drivers/CMSIS/Source/system_stm32f10x.c ****       break;
+ 359              		.loc 1 326 7 is_stmt 1 view .LVU103
+ 326:Drivers/CMSIS/Source/system_stm32f10x.c ****       break;
+ 360              		.loc 1 326 23 is_stmt 0 view .LVU104
+ 361 0038 124B     		ldr	r3, .L27+4
+ 362              	.LVL10:
+ 326:Drivers/CMSIS/Source/system_stm32f10x.c ****       break;
+ 363              		.loc 1 326 23 view .LVU105
+ 364 003a 134A     		ldr	r2, .L27+8
+ 365 003c 1A60     		str	r2, [r3]
+ 327:Drivers/CMSIS/Source/system_stm32f10x.c ****     case 0x08:  /* PLL used as system clock */
+ 366              		.loc 1 327 7 is_stmt 1 view .LVU106
+ 367 003e EFE7     		b	.L23
+ 368              	.LVL11:
+ 369              	.L21:
+ 331:Drivers/CMSIS/Source/system_stm32f10x.c ****       pllsource = RCC->CFGR & RCC_CFGR_PLLSRC;
+ 370              		.loc 1 331 7 view .LVU107
+ 331:Drivers/CMSIS/Source/system_stm32f10x.c ****       pllsource = RCC->CFGR & RCC_CFGR_PLLSRC;
+ 371              		.loc 1 331 20 is_stmt 0 view .LVU108
+ 372 0040 0F4A     		ldr	r2, .L27
+ 373 0042 5368     		ldr	r3, [r2, #4]
+ 374              	.LVL12:
+ 332:Drivers/CMSIS/Source/system_stm32f10x.c ****       
+ 375              		.loc 1 332 7 is_stmt 1 view .LVU109
+ 332:Drivers/CMSIS/Source/system_stm32f10x.c ****       
+ 376              		.loc 1 332 22 is_stmt 0 view .LVU110
+ 377 0044 5268     		ldr	r2, [r2, #4]
+ 378              	.LVL13:
+ 335:Drivers/CMSIS/Source/system_stm32f10x.c ****       
+ 379              		.loc 1 335 7 is_stmt 1 view .LVU111
+ 335:Drivers/CMSIS/Source/system_stm32f10x.c ****       
+ 380              		.loc 1 335 27 is_stmt 0 view .LVU112
+ 381 0046 C3F38343 		ubfx	r3, r3, #18, #4
+ARM GAS  C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s 			page 28
+
+
+ 382              	.LVL14:
+ 335:Drivers/CMSIS/Source/system_stm32f10x.c ****       
+ 383              		.loc 1 335 15 view .LVU113
+ 384 004a 0233     		adds	r3, r3, #2
+ 385              	.LVL15:
+ 337:Drivers/CMSIS/Source/system_stm32f10x.c ****       {
+ 386              		.loc 1 337 7 is_stmt 1 view .LVU114
+ 337:Drivers/CMSIS/Source/system_stm32f10x.c ****       {
+ 387              		.loc 1 337 10 is_stmt 0 view .LVU115
+ 388 004c 12F4803F 		tst	r2, #65536
+ 389 0050 05D1     		bne	.L24
+ 340:Drivers/CMSIS/Source/system_stm32f10x.c ****       }
+ 390              		.loc 1 340 9 is_stmt 1 view .LVU116
+ 340:Drivers/CMSIS/Source/system_stm32f10x.c ****       }
+ 391              		.loc 1 340 44 is_stmt 0 view .LVU117
+ 392 0052 0F4A     		ldr	r2, .L27+16
+ 393              	.LVL16:
+ 340:Drivers/CMSIS/Source/system_stm32f10x.c ****       }
+ 394              		.loc 1 340 44 view .LVU118
+ 395 0054 02FB03F3 		mul	r3, r2, r3
+ 396              	.LVL17:
+ 340:Drivers/CMSIS/Source/system_stm32f10x.c ****       }
+ 397              		.loc 1 340 25 view .LVU119
+ 398 0058 0A4A     		ldr	r2, .L27+4
+ 399 005a 1360     		str	r3, [r2]
+ 400 005c E0E7     		b	.L23
+ 401              	.LVL18:
+ 402              	.L24:
+ 350:Drivers/CMSIS/Source/system_stm32f10x.c ****         {/* HSE oscillator clock divided by 2 */
+ 403              		.loc 1 350 9 is_stmt 1 view .LVU120
+ 350:Drivers/CMSIS/Source/system_stm32f10x.c ****         {/* HSE oscillator clock divided by 2 */
+ 404              		.loc 1 350 17 is_stmt 0 view .LVU121
+ 405 005e 084A     		ldr	r2, .L27
+ 406              	.LVL19:
+ 350:Drivers/CMSIS/Source/system_stm32f10x.c ****         {/* HSE oscillator clock divided by 2 */
+ 407              		.loc 1 350 17 view .LVU122
+ 408 0060 5268     		ldr	r2, [r2, #4]
+ 350:Drivers/CMSIS/Source/system_stm32f10x.c ****         {/* HSE oscillator clock divided by 2 */
+ 409              		.loc 1 350 12 view .LVU123
+ 410 0062 12F4003F 		tst	r2, #131072
+ 411 0066 05D0     		beq	.L25
+ 352:Drivers/CMSIS/Source/system_stm32f10x.c ****         }
+ 412              		.loc 1 352 11 is_stmt 1 view .LVU124
+ 352:Drivers/CMSIS/Source/system_stm32f10x.c ****         }
+ 413              		.loc 1 352 46 is_stmt 0 view .LVU125
+ 414 0068 094A     		ldr	r2, .L27+16
+ 415 006a 02FB03F3 		mul	r3, r2, r3
+ 416              	.LVL20:
+ 352:Drivers/CMSIS/Source/system_stm32f10x.c ****         }
+ 417              		.loc 1 352 27 view .LVU126
+ 418 006e 054A     		ldr	r2, .L27+4
+ 419 0070 1360     		str	r3, [r2]
+ 420 0072 D5E7     		b	.L23
+ 421              	.LVL21:
+ 422              	.L25:
+ 356:Drivers/CMSIS/Source/system_stm32f10x.c ****         }
+ 423              		.loc 1 356 11 is_stmt 1 view .LVU127
+ARM GAS  C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s 			page 29
+
+
+ 356:Drivers/CMSIS/Source/system_stm32f10x.c ****         }
+ 424              		.loc 1 356 39 is_stmt 0 view .LVU128
+ 425 0074 044A     		ldr	r2, .L27+8
+ 426 0076 02FB03F3 		mul	r3, r2, r3
+ 427              	.LVL22:
+ 356:Drivers/CMSIS/Source/system_stm32f10x.c ****         }
+ 428              		.loc 1 356 27 view .LVU129
+ 429 007a 024A     		ldr	r2, .L27+4
+ 430 007c 1360     		str	r3, [r2]
+ 431 007e CFE7     		b	.L23
+ 432              	.L28:
+ 433              		.align	2
+ 434              	.L27:
+ 435 0080 00100240 		.word	1073876992
+ 436 0084 00000000 		.word	.LANCHOR0
+ 437 0088 00127A00 		.word	8000000
+ 438 008c 00000000 		.word	.LANCHOR1
+ 439 0090 00093D00 		.word	4000000
+ 440              		.cfi_endproc
+ 441              	.LFE30:
+ 443              		.global	AHBPrescTable
+ 444              		.global	SystemCoreClock
+ 445              		.section	.data.AHBPrescTable,"aw"
+ 446              		.align	2
+ 447              		.set	.LANCHOR1,. + 0
+ 450              	AHBPrescTable:
+ 451 0000 00000000 		.ascii	"\000\000\000\000\000\000\000\000\001\002\003\004\006"
+ 451      00000000 
+ 451      01020304 
+ 451      06
+ 452 000d 070809   		.ascii	"\007\010\011"
+ 453              		.section	.data.SystemCoreClock,"aw"
+ 454              		.align	2
+ 455              		.set	.LANCHOR0,. + 0
+ 458              	SystemCoreClock:
+ 459 0000 00A24A04 		.word	72000000
+ 460              		.text
+ 461              	.Letext0:
+ 462              		.file 2 "e:\\programdata\\gnu arm embedded toolchain\\arm-none-eabi\\include\\machine\\_default_ty
+ 463              		.file 3 "e:\\programdata\\gnu arm embedded toolchain\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 464              		.file 4 "Drivers/CMSIS/Include/core_cm3.h"
+ 465              		.file 5 "Drivers/CMSIS/Include/stm32f10x.h"
+ 466              		.file 6 "Drivers/CMSIS/Include/system_stm32f10x.h"
+ARM GAS  C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s 			page 30
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 system_stm32f10x.c
+C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s:18     .text.SetSysClockTo72:00000000 $t
+C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s:23     .text.SetSysClockTo72:00000000 SetSysClockTo72
+C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s:189    .text.SetSysClockTo72:000000bc $d
+C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s:195    .text.SetSysClock:00000000 $t
+C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s:200    .text.SetSysClock:00000000 SetSysClock
+C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s:220    .text.SystemInit:00000000 $t
+C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s:226    .text.SystemInit:00000000 SystemInit
+C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s:282    .text.SystemInit:00000044 $d
+C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s:289    .text.SystemCoreClockUpdate:00000000 $t
+C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s:295    .text.SystemCoreClockUpdate:00000000 SystemCoreClockUpdate
+C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s:435    .text.SystemCoreClockUpdate:00000080 $d
+C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s:450    .data.AHBPrescTable:00000000 AHBPrescTable
+C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s:458    .data.SystemCoreClock:00000000 SystemCoreClock
+C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s:446    .data.AHBPrescTable:00000000 $d
+C:\Users\nine\AppData\Local\Temp\cc4Cztyf.s:454    .data.SystemCoreClock:00000000 $d
+
+NO UNDEFINED SYMBOLS

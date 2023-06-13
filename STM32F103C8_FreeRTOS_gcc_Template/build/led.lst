@@ -1,0 +1,181 @@
+ARM GAS  C:\Users\nine\AppData\Local\Temp\cc2HNNk3.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"led.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.LED_Init,"ax",%progbits
+  18              		.align	1
+  19              		.global	LED_Init
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	LED_Init:
+  25              	.LFB29:
+  26              		.file 1 "Hardware/LED/Src/led.c"
+   1:Hardware/LED/Src/led.c **** #include "led.h"
+   2:Hardware/LED/Src/led.c **** #include "stm32f10x.h"
+   3:Hardware/LED/Src/led.c **** 
+   4:Hardware/LED/Src/led.c **** void LED_Init(void)
+   5:Hardware/LED/Src/led.c **** {
+  27              		.loc 1 5 1 view -0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 8
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31 0000 30B5     		push	{r4, r5, lr}
+  32              	.LCFI0:
+  33              		.cfi_def_cfa_offset 12
+  34              		.cfi_offset 4, -12
+  35              		.cfi_offset 5, -8
+  36              		.cfi_offset 14, -4
+  37 0002 83B0     		sub	sp, sp, #12
+  38              	.LCFI1:
+  39              		.cfi_def_cfa_offset 24
+   6:Hardware/LED/Src/led.c ****     GPIO_InitTypeDef GPIO_InitStructure = {0};
+  40              		.loc 1 6 5 view .LVU1
+  41              		.loc 1 6 22 is_stmt 0 view .LVU2
+  42 0004 0023     		movs	r3, #0
+  43 0006 0193     		str	r3, [sp, #4]
+   7:Hardware/LED/Src/led.c **** 	
+   8:Hardware/LED/Src/led.c **** 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOC, ENABLE);
+  44              		.loc 1 8 2 is_stmt 1 view .LVU3
+  45 0008 0121     		movs	r1, #1
+  46 000a 1020     		movs	r0, #16
+  47 000c FFF7FEFF 		bl	RCC_APB2PeriphClockCmd
+  48              	.LVL0:
+   9:Hardware/LED/Src/led.c **** 	
+  10:Hardware/LED/Src/led.c **** 	GPIO_InitStructure.GPIO_Pin = LED_Pin;
+ARM GAS  C:\Users\nine\AppData\Local\Temp\cc2HNNk3.s 			page 2
+
+
+  49              		.loc 1 10 2 view .LVU4
+  50              		.loc 1 10 30 is_stmt 0 view .LVU5
+  51 0010 4FF40055 		mov	r5, #8192
+  52 0014 ADF80450 		strh	r5, [sp, #4]	@ movhi
+  11:Hardware/LED/Src/led.c ****     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+  53              		.loc 1 11 5 is_stmt 1 view .LVU6
+  54              		.loc 1 11 34 is_stmt 0 view .LVU7
+  55 0018 1023     		movs	r3, #16
+  56 001a 8DF80730 		strb	r3, [sp, #7]
+  12:Hardware/LED/Src/led.c **** 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+  57              		.loc 1 12 2 is_stmt 1 view .LVU8
+  58              		.loc 1 12 32 is_stmt 0 view .LVU9
+  59 001e 0323     		movs	r3, #3
+  60 0020 8DF80630 		strb	r3, [sp, #6]
+  13:Hardware/LED/Src/led.c **** 	GPIO_Init(LED_GPIO_Port, &GPIO_InitStructure);
+  61              		.loc 1 13 2 is_stmt 1 view .LVU10
+  62 0024 054C     		ldr	r4, .L3
+  63 0026 01A9     		add	r1, sp, #4
+  64 0028 2046     		mov	r0, r4
+  65 002a FFF7FEFF 		bl	GPIO_Init
+  66              	.LVL1:
+  14:Hardware/LED/Src/led.c **** 	
+  15:Hardware/LED/Src/led.c **** 	GPIO_SetBits(LED_GPIO_Port, LED_Pin);
+  67              		.loc 1 15 2 view .LVU11
+  68 002e 2946     		mov	r1, r5
+  69 0030 2046     		mov	r0, r4
+  70 0032 FFF7FEFF 		bl	GPIO_SetBits
+  71              	.LVL2:
+  16:Hardware/LED/Src/led.c **** }
+  72              		.loc 1 16 1 is_stmt 0 view .LVU12
+  73 0036 03B0     		add	sp, sp, #12
+  74              	.LCFI2:
+  75              		.cfi_def_cfa_offset 12
+  76              		@ sp needed
+  77 0038 30BD     		pop	{r4, r5, pc}
+  78              	.L4:
+  79 003a 00BF     		.align	2
+  80              	.L3:
+  81 003c 00100140 		.word	1073811456
+  82              		.cfi_endproc
+  83              	.LFE29:
+  85              		.section	.text.LED_Toggle,"ax",%progbits
+  86              		.align	1
+  87              		.global	LED_Toggle
+  88              		.syntax unified
+  89              		.thumb
+  90              		.thumb_func
+  92              	LED_Toggle:
+  93              	.LFB30:
+  17:Hardware/LED/Src/led.c **** 
+  18:Hardware/LED/Src/led.c **** void LED_Toggle(void)
+  19:Hardware/LED/Src/led.c **** {
+  94              		.loc 1 19 1 is_stmt 1 view -0
+  95              		.cfi_startproc
+  96              		@ args = 0, pretend = 0, frame = 0
+  97              		@ frame_needed = 0, uses_anonymous_args = 0
+  98              		@ link register save eliminated.
+ARM GAS  C:\Users\nine\AppData\Local\Temp\cc2HNNk3.s 			page 3
+
+
+  20:Hardware/LED/Src/led.c **** 	uint32_t odr;
+  99              		.loc 1 20 2 view .LVU14
+  21:Hardware/LED/Src/led.c **** 	
+  22:Hardware/LED/Src/led.c **** 	/*获取当前输出寄存器的值*/
+  23:Hardware/LED/Src/led.c **** 	odr = GPIOC->ODR;
+ 100              		.loc 1 23 2 view .LVU15
+ 101              		.loc 1 23 6 is_stmt 0 view .LVU16
+ 102 0000 0549     		ldr	r1, .L6
+ 103 0002 CB68     		ldr	r3, [r1, #12]
+ 104              	.LVL3:
+  24:Hardware/LED/Src/led.c **** 	/*当输出为1时复位，当输出为0时置位*/
+  25:Hardware/LED/Src/led.c **** 	GPIOC->BSRR = ((odr & LED_Pin) << 16) | (~odr & LED_Pin);
+ 105              		.loc 1 25 2 is_stmt 1 view .LVU17
+ 106              		.loc 1 25 33 is_stmt 0 view .LVU18
+ 107 0004 1A04     		lsls	r2, r3, #16
+ 108 0006 02F00052 		and	r2, r2, #536870912
+ 109              		.loc 1 25 43 view .LVU19
+ 110 000a DB43     		mvns	r3, r3
+ 111              	.LVL4:
+ 112              		.loc 1 25 48 view .LVU20
+ 113 000c 03F40053 		and	r3, r3, #8192
+ 114              	.LVL5:
+ 115              		.loc 1 25 40 view .LVU21
+ 116 0010 1343     		orrs	r3, r3, r2
+ 117              		.loc 1 25 14 view .LVU22
+ 118 0012 0B61     		str	r3, [r1, #16]
+  26:Hardware/LED/Src/led.c **** }
+ 119              		.loc 1 26 1 view .LVU23
+ 120 0014 7047     		bx	lr
+ 121              	.L7:
+ 122 0016 00BF     		.align	2
+ 123              	.L6:
+ 124 0018 00100140 		.word	1073811456
+ 125              		.cfi_endproc
+ 126              	.LFE30:
+ 128              		.text
+ 129              	.Letext0:
+ 130              		.file 2 "e:\\programdata\\gnu arm embedded toolchain\\arm-none-eabi\\include\\machine\\_default_ty
+ 131              		.file 3 "e:\\programdata\\gnu arm embedded toolchain\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 132              		.file 4 "Drivers/CMSIS/Include/stm32f10x.h"
+ 133              		.file 5 "Drivers/STM32F10x_StdPeriph_Driver/Include/stm32f10x_gpio.h"
+ 134              		.file 6 "Drivers/STM32F10x_StdPeriph_Driver/Include/stm32f10x_rcc.h"
+ARM GAS  C:\Users\nine\AppData\Local\Temp\cc2HNNk3.s 			page 4
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 led.c
+C:\Users\nine\AppData\Local\Temp\cc2HNNk3.s:18     .text.LED_Init:00000000 $t
+C:\Users\nine\AppData\Local\Temp\cc2HNNk3.s:24     .text.LED_Init:00000000 LED_Init
+C:\Users\nine\AppData\Local\Temp\cc2HNNk3.s:81     .text.LED_Init:0000003c $d
+C:\Users\nine\AppData\Local\Temp\cc2HNNk3.s:86     .text.LED_Toggle:00000000 $t
+C:\Users\nine\AppData\Local\Temp\cc2HNNk3.s:92     .text.LED_Toggle:00000000 LED_Toggle
+C:\Users\nine\AppData\Local\Temp\cc2HNNk3.s:124    .text.LED_Toggle:00000018 $d
+
+UNDEFINED SYMBOLS
+RCC_APB2PeriphClockCmd
+GPIO_Init
+GPIO_SetBits

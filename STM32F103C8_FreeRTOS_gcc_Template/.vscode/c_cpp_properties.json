@@ -1,0 +1,30 @@
+{
+    "configurations": [
+        {
+            "name": "STM32",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/Drivers/CMSIS/Include",
+                "${workspaceFolder}/Drivers/STM32F10x_StdPeriph_Driver/Include",
+                "${workspaceFolder}/FreeRTOS/include",
+                "${workspaceFolder}/FreeRTOS/portable/ARM_CM3",
+                "${workspaceFolder}/User/Inc",
+                "${workspaceFolder}/Hardware/LED/Inc"
+                
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE",
+                "USE_STDPERIPH_DRIVER",
+                "STM32F10X_MD"
+            ],
+            "cStandard": "c99",
+            "cppStandard": "c++11",
+            "intelliSenseMode": "gcc-arm",
+            "compilerPath": "E:/ProgramData/GNU Arm Embedded Toolchain/bin/arm-none-eabi-gcc.exe",
+            "configurationProvider": "ms-vscode.makefile-tools"
+        }
+    ],
+    "version": 4
+}

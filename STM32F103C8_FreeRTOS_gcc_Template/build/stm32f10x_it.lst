@@ -1,0 +1,334 @@
+ARM GAS  C:\Users\nine\AppData\Local\Temp\ccG5cRvV.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"stm32f10x_it.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.text.NMI_Handler,"ax",%progbits
+  18              		.align	1
+  19              		.global	NMI_Handler
+  20              		.syntax unified
+  21              		.thumb
+  22              		.thumb_func
+  24              	NMI_Handler:
+  25              	.LFB34:
+  26              		.file 1 "User/Src/stm32f10x_it.c"
+   1:User/Src/stm32f10x_it.c **** /**
+   2:User/Src/stm32f10x_it.c ****   ******************************************************************************
+   3:User/Src/stm32f10x_it.c ****   * @file    Project/STM32F10x_StdPeriph_Template/stm32f10x_it.c 
+   4:User/Src/stm32f10x_it.c ****   * @author  MCD Application Team
+   5:User/Src/stm32f10x_it.c ****   * @version V3.6.0
+   6:User/Src/stm32f10x_it.c ****   * @date    20-September-2021
+   7:User/Src/stm32f10x_it.c ****   * @brief   Main Interrupt Service Routines.
+   8:User/Src/stm32f10x_it.c ****   *          This file provides template for all exceptions handler and 
+   9:User/Src/stm32f10x_it.c ****   *          peripherals interrupt service routine.
+  10:User/Src/stm32f10x_it.c ****   ******************************************************************************
+  11:User/Src/stm32f10x_it.c ****   * @attention
+  12:User/Src/stm32f10x_it.c ****   *
+  13:User/Src/stm32f10x_it.c ****   * Copyright (c) 2011 STMicroelectronics.
+  14:User/Src/stm32f10x_it.c ****   * All rights reserved.
+  15:User/Src/stm32f10x_it.c ****   *
+  16:User/Src/stm32f10x_it.c ****   * This software is licensed under terms that can be found in the LICENSE file
+  17:User/Src/stm32f10x_it.c ****   * in the root directory of this software component.
+  18:User/Src/stm32f10x_it.c ****   * If no LICENSE file comes with this software, it is provided AS-IS.
+  19:User/Src/stm32f10x_it.c ****   *
+  20:User/Src/stm32f10x_it.c ****   ******************************************************************************
+  21:User/Src/stm32f10x_it.c ****   */
+  22:User/Src/stm32f10x_it.c **** 
+  23:User/Src/stm32f10x_it.c **** /* Includes ------------------------------------------------------------------*/
+  24:User/Src/stm32f10x_it.c **** #include "stm32f10x_it.h"
+  25:User/Src/stm32f10x_it.c **** #include "FreeRTOS.h"
+  26:User/Src/stm32f10x_it.c **** #include "task.h"
+  27:User/Src/stm32f10x_it.c **** 
+  28:User/Src/stm32f10x_it.c **** /** @addtogroup STM32F10x_StdPeriph_Template
+  29:User/Src/stm32f10x_it.c ****   * @{
+  30:User/Src/stm32f10x_it.c ****   */
+  31:User/Src/stm32f10x_it.c **** 
+  32:User/Src/stm32f10x_it.c **** /* Private typedef -----------------------------------------------------------*/
+ARM GAS  C:\Users\nine\AppData\Local\Temp\ccG5cRvV.s 			page 2
+
+
+  33:User/Src/stm32f10x_it.c **** /* Private define ------------------------------------------------------------*/
+  34:User/Src/stm32f10x_it.c **** /* Private macro -------------------------------------------------------------*/
+  35:User/Src/stm32f10x_it.c **** /* Private variables ---------------------------------------------------------*/
+  36:User/Src/stm32f10x_it.c **** /* Private function prototypes -----------------------------------------------*/
+  37:User/Src/stm32f10x_it.c **** /* Private functions ---------------------------------------------------------*/
+  38:User/Src/stm32f10x_it.c **** 
+  39:User/Src/stm32f10x_it.c **** /******************************************************************************/
+  40:User/Src/stm32f10x_it.c **** /*            Cortex-M3 Processor Exceptions Handlers                         */
+  41:User/Src/stm32f10x_it.c **** /******************************************************************************/
+  42:User/Src/stm32f10x_it.c **** 
+  43:User/Src/stm32f10x_it.c **** /**
+  44:User/Src/stm32f10x_it.c ****   * @brief  This function handles NMI exception.
+  45:User/Src/stm32f10x_it.c ****   * @param  None
+  46:User/Src/stm32f10x_it.c ****   * @retval None
+  47:User/Src/stm32f10x_it.c ****   */
+  48:User/Src/stm32f10x_it.c **** void NMI_Handler(void)
+  49:User/Src/stm32f10x_it.c **** {
+  27              		.loc 1 49 1 view -0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31              		@ link register save eliminated.
+  50:User/Src/stm32f10x_it.c **** }
+  32              		.loc 1 50 1 view .LVU1
+  33 0000 7047     		bx	lr
+  34              		.cfi_endproc
+  35              	.LFE34:
+  37              		.section	.text.HardFault_Handler,"ax",%progbits
+  38              		.align	1
+  39              		.global	HardFault_Handler
+  40              		.syntax unified
+  41              		.thumb
+  42              		.thumb_func
+  44              	HardFault_Handler:
+  45              	.LFB35:
+  51:User/Src/stm32f10x_it.c **** 
+  52:User/Src/stm32f10x_it.c **** /**
+  53:User/Src/stm32f10x_it.c ****   * @brief  This function handles Hard Fault exception.
+  54:User/Src/stm32f10x_it.c ****   * @param  None
+  55:User/Src/stm32f10x_it.c ****   * @retval None
+  56:User/Src/stm32f10x_it.c ****   */
+  57:User/Src/stm32f10x_it.c **** void HardFault_Handler(void)
+  58:User/Src/stm32f10x_it.c **** {
+  46              		.loc 1 58 1 view -0
+  47              		.cfi_startproc
+  48              		@ Volatile: function does not return.
+  49              		@ args = 0, pretend = 0, frame = 0
+  50              		@ frame_needed = 0, uses_anonymous_args = 0
+  51              		@ link register save eliminated.
+  52              	.L3:
+  59:User/Src/stm32f10x_it.c ****   /* Go to infinite loop when Hard Fault exception occurs */
+  60:User/Src/stm32f10x_it.c ****   while (1)
+  53              		.loc 1 60 3 discriminator 1 view .LVU3
+  61:User/Src/stm32f10x_it.c ****   {
+  62:User/Src/stm32f10x_it.c ****   }
+  54              		.loc 1 62 3 discriminator 1 view .LVU4
+  60:User/Src/stm32f10x_it.c ****   {
+ARM GAS  C:\Users\nine\AppData\Local\Temp\ccG5cRvV.s 			page 3
+
+
+  55              		.loc 1 60 9 discriminator 1 view .LVU5
+  56 0000 FEE7     		b	.L3
+  57              		.cfi_endproc
+  58              	.LFE35:
+  60              		.section	.text.MemManage_Handler,"ax",%progbits
+  61              		.align	1
+  62              		.global	MemManage_Handler
+  63              		.syntax unified
+  64              		.thumb
+  65              		.thumb_func
+  67              	MemManage_Handler:
+  68              	.LFB36:
+  63:User/Src/stm32f10x_it.c **** }
+  64:User/Src/stm32f10x_it.c **** 
+  65:User/Src/stm32f10x_it.c **** /**
+  66:User/Src/stm32f10x_it.c ****   * @brief  This function handles Memory Manage exception.
+  67:User/Src/stm32f10x_it.c ****   * @param  None
+  68:User/Src/stm32f10x_it.c ****   * @retval None
+  69:User/Src/stm32f10x_it.c ****   */
+  70:User/Src/stm32f10x_it.c **** void MemManage_Handler(void)
+  71:User/Src/stm32f10x_it.c **** {
+  69              		.loc 1 71 1 view -0
+  70              		.cfi_startproc
+  71              		@ Volatile: function does not return.
+  72              		@ args = 0, pretend = 0, frame = 0
+  73              		@ frame_needed = 0, uses_anonymous_args = 0
+  74              		@ link register save eliminated.
+  75              	.L5:
+  72:User/Src/stm32f10x_it.c ****   /* Go to infinite loop when Memory Manage exception occurs */
+  73:User/Src/stm32f10x_it.c ****   while (1)
+  76              		.loc 1 73 3 discriminator 1 view .LVU7
+  74:User/Src/stm32f10x_it.c ****   {
+  75:User/Src/stm32f10x_it.c ****   }
+  77              		.loc 1 75 3 discriminator 1 view .LVU8
+  73:User/Src/stm32f10x_it.c ****   {
+  78              		.loc 1 73 9 discriminator 1 view .LVU9
+  79 0000 FEE7     		b	.L5
+  80              		.cfi_endproc
+  81              	.LFE36:
+  83              		.section	.text.BusFault_Handler,"ax",%progbits
+  84              		.align	1
+  85              		.global	BusFault_Handler
+  86              		.syntax unified
+  87              		.thumb
+  88              		.thumb_func
+  90              	BusFault_Handler:
+  91              	.LFB37:
+  76:User/Src/stm32f10x_it.c **** }
+  77:User/Src/stm32f10x_it.c **** 
+  78:User/Src/stm32f10x_it.c **** /**
+  79:User/Src/stm32f10x_it.c ****   * @brief  This function handles Bus Fault exception.
+  80:User/Src/stm32f10x_it.c ****   * @param  None
+  81:User/Src/stm32f10x_it.c ****   * @retval None
+  82:User/Src/stm32f10x_it.c ****   */
+  83:User/Src/stm32f10x_it.c **** void BusFault_Handler(void)
+  84:User/Src/stm32f10x_it.c **** {
+  92              		.loc 1 84 1 view -0
+ARM GAS  C:\Users\nine\AppData\Local\Temp\ccG5cRvV.s 			page 4
+
+
+  93              		.cfi_startproc
+  94              		@ Volatile: function does not return.
+  95              		@ args = 0, pretend = 0, frame = 0
+  96              		@ frame_needed = 0, uses_anonymous_args = 0
+  97              		@ link register save eliminated.
+  98              	.L7:
+  85:User/Src/stm32f10x_it.c ****   /* Go to infinite loop when Bus Fault exception occurs */
+  86:User/Src/stm32f10x_it.c ****   while (1)
+  99              		.loc 1 86 3 discriminator 1 view .LVU11
+  87:User/Src/stm32f10x_it.c ****   {
+  88:User/Src/stm32f10x_it.c ****   }
+ 100              		.loc 1 88 3 discriminator 1 view .LVU12
+  86:User/Src/stm32f10x_it.c ****   {
+ 101              		.loc 1 86 9 discriminator 1 view .LVU13
+ 102 0000 FEE7     		b	.L7
+ 103              		.cfi_endproc
+ 104              	.LFE37:
+ 106              		.section	.text.UsageFault_Handler,"ax",%progbits
+ 107              		.align	1
+ 108              		.global	UsageFault_Handler
+ 109              		.syntax unified
+ 110              		.thumb
+ 111              		.thumb_func
+ 113              	UsageFault_Handler:
+ 114              	.LFB38:
+  89:User/Src/stm32f10x_it.c **** }
+  90:User/Src/stm32f10x_it.c **** 
+  91:User/Src/stm32f10x_it.c **** /**
+  92:User/Src/stm32f10x_it.c ****   * @brief  This function handles Usage Fault exception.
+  93:User/Src/stm32f10x_it.c ****   * @param  None
+  94:User/Src/stm32f10x_it.c ****   * @retval None
+  95:User/Src/stm32f10x_it.c ****   */
+  96:User/Src/stm32f10x_it.c **** void UsageFault_Handler(void)
+  97:User/Src/stm32f10x_it.c **** {
+ 115              		.loc 1 97 1 view -0
+ 116              		.cfi_startproc
+ 117              		@ Volatile: function does not return.
+ 118              		@ args = 0, pretend = 0, frame = 0
+ 119              		@ frame_needed = 0, uses_anonymous_args = 0
+ 120              		@ link register save eliminated.
+ 121              	.L9:
+  98:User/Src/stm32f10x_it.c ****   /* Go to infinite loop when Usage Fault exception occurs */
+  99:User/Src/stm32f10x_it.c ****   while (1)
+ 122              		.loc 1 99 3 discriminator 1 view .LVU15
+ 100:User/Src/stm32f10x_it.c ****   {
+ 101:User/Src/stm32f10x_it.c ****   }
+ 123              		.loc 1 101 3 discriminator 1 view .LVU16
+  99:User/Src/stm32f10x_it.c ****   {
+ 124              		.loc 1 99 9 discriminator 1 view .LVU17
+ 125 0000 FEE7     		b	.L9
+ 126              		.cfi_endproc
+ 127              	.LFE38:
+ 129              		.section	.text.DebugMon_Handler,"ax",%progbits
+ 130              		.align	1
+ 131              		.global	DebugMon_Handler
+ 132              		.syntax unified
+ 133              		.thumb
+ARM GAS  C:\Users\nine\AppData\Local\Temp\ccG5cRvV.s 			page 5
+
+
+ 134              		.thumb_func
+ 136              	DebugMon_Handler:
+ 137              	.LFB39:
+ 102:User/Src/stm32f10x_it.c **** }
+ 103:User/Src/stm32f10x_it.c **** 
+ 104:User/Src/stm32f10x_it.c **** /**
+ 105:User/Src/stm32f10x_it.c ****   * @brief  This function handles Debug Monitor exception.
+ 106:User/Src/stm32f10x_it.c ****   * @param  None
+ 107:User/Src/stm32f10x_it.c ****   * @retval None
+ 108:User/Src/stm32f10x_it.c ****   */
+ 109:User/Src/stm32f10x_it.c **** void DebugMon_Handler(void)
+ 110:User/Src/stm32f10x_it.c **** {
+ 138              		.loc 1 110 1 view -0
+ 139              		.cfi_startproc
+ 140              		@ args = 0, pretend = 0, frame = 0
+ 141              		@ frame_needed = 0, uses_anonymous_args = 0
+ 142              		@ link register save eliminated.
+ 111:User/Src/stm32f10x_it.c **** }
+ 143              		.loc 1 111 1 view .LVU19
+ 144 0000 7047     		bx	lr
+ 145              		.cfi_endproc
+ 146              	.LFE39:
+ 148              		.section	.text.SysTick_Handler,"ax",%progbits
+ 149              		.align	1
+ 150              		.global	SysTick_Handler
+ 151              		.syntax unified
+ 152              		.thumb
+ 153              		.thumb_func
+ 155              	SysTick_Handler:
+ 156              	.LFB40:
+ 112:User/Src/stm32f10x_it.c **** 
+ 113:User/Src/stm32f10x_it.c **** 
+ 114:User/Src/stm32f10x_it.c **** /**
+ 115:User/Src/stm32f10x_it.c ****   * @brief  This function handles SysTick Handler.
+ 116:User/Src/stm32f10x_it.c ****   * @param  None
+ 117:User/Src/stm32f10x_it.c ****   * @retval None
+ 118:User/Src/stm32f10x_it.c ****   */
+ 119:User/Src/stm32f10x_it.c **** void SysTick_Handler(void)
+ 120:User/Src/stm32f10x_it.c **** {
+ 157              		.loc 1 120 1 view -0
+ 158              		.cfi_startproc
+ 159              		@ args = 0, pretend = 0, frame = 0
+ 160              		@ frame_needed = 0, uses_anonymous_args = 0
+ 161 0000 08B5     		push	{r3, lr}
+ 162              	.LCFI0:
+ 163              		.cfi_def_cfa_offset 8
+ 164              		.cfi_offset 3, -8
+ 165              		.cfi_offset 14, -4
+ 121:User/Src/stm32f10x_it.c **** 	#if (INCLUDE_xTaskGetSchedulerState == 1)
+ 122:User/Src/stm32f10x_it.c **** 		if(xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED)
+ 123:User/Src/stm32f10x_it.c **** 		{
+ 124:User/Src/stm32f10x_it.c **** 			#endif
+ 125:User/Src/stm32f10x_it.c **** 			xPortSysTickHandler();
+ 166              		.loc 1 125 4 view .LVU21
+ 167 0002 FFF7FEFF 		bl	xPortSysTickHandler
+ 168              	.LVL0:
+ 126:User/Src/stm32f10x_it.c **** 			#if (INCLUDE_xTaskGetSchedulerState == 1)
+ARM GAS  C:\Users\nine\AppData\Local\Temp\ccG5cRvV.s 			page 6
+
+
+ 127:User/Src/stm32f10x_it.c **** 		}
+ 128:User/Src/stm32f10x_it.c **** 	#endif
+ 129:User/Src/stm32f10x_it.c **** }
+ 169              		.loc 1 129 1 is_stmt 0 view .LVU22
+ 170 0006 08BD     		pop	{r3, pc}
+ 171              		.cfi_endproc
+ 172              	.LFE40:
+ 174              		.text
+ 175              	.Letext0:
+ARM GAS  C:\Users\nine\AppData\Local\Temp\ccG5cRvV.s 			page 7
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 stm32f10x_it.c
+C:\Users\nine\AppData\Local\Temp\ccG5cRvV.s:18     .text.NMI_Handler:00000000 $t
+C:\Users\nine\AppData\Local\Temp\ccG5cRvV.s:24     .text.NMI_Handler:00000000 NMI_Handler
+C:\Users\nine\AppData\Local\Temp\ccG5cRvV.s:38     .text.HardFault_Handler:00000000 $t
+C:\Users\nine\AppData\Local\Temp\ccG5cRvV.s:44     .text.HardFault_Handler:00000000 HardFault_Handler
+C:\Users\nine\AppData\Local\Temp\ccG5cRvV.s:61     .text.MemManage_Handler:00000000 $t
+C:\Users\nine\AppData\Local\Temp\ccG5cRvV.s:67     .text.MemManage_Handler:00000000 MemManage_Handler
+C:\Users\nine\AppData\Local\Temp\ccG5cRvV.s:84     .text.BusFault_Handler:00000000 $t
+C:\Users\nine\AppData\Local\Temp\ccG5cRvV.s:90     .text.BusFault_Handler:00000000 BusFault_Handler
+C:\Users\nine\AppData\Local\Temp\ccG5cRvV.s:107    .text.UsageFault_Handler:00000000 $t
+C:\Users\nine\AppData\Local\Temp\ccG5cRvV.s:113    .text.UsageFault_Handler:00000000 UsageFault_Handler
+C:\Users\nine\AppData\Local\Temp\ccG5cRvV.s:130    .text.DebugMon_Handler:00000000 $t
+C:\Users\nine\AppData\Local\Temp\ccG5cRvV.s:136    .text.DebugMon_Handler:00000000 DebugMon_Handler
+C:\Users\nine\AppData\Local\Temp\ccG5cRvV.s:149    .text.SysTick_Handler:00000000 $t
+C:\Users\nine\AppData\Local\Temp\ccG5cRvV.s:155    .text.SysTick_Handler:00000000 SysTick_Handler
+
+UNDEFINED SYMBOLS
+xPortSysTickHandler

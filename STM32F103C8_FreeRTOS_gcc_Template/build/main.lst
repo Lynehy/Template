@@ -1,0 +1,341 @@
+ARM GAS  C:\Users\nine\AppData\Local\Temp\ccG97wgm.s 			page 1
+
+
+   1              		.cpu cortex-m3
+   2              		.arch armv7-m
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.file	"main.c"
+  14              		.text
+  15              	.Ltext0:
+  16              		.cfi_sections	.debug_frame
+  17              		.section	.rodata.AppTaskCreate.str1.4,"aMS",%progbits,1
+  18              		.align	2
+  19              	.LC0:
+  20 0000 4C45445F 		.ascii	"LED_Task\000"
+  20      5461736B 
+  20      00
+  21              		.section	.text.AppTaskCreate,"ax",%progbits
+  22              		.align	1
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	AppTaskCreate:
+  28              	.LVL0:
+  29              	.LFB35:
+  30              		.file 1 "User/Src/main.c"
+   1:User/Src/main.c **** #include "main.h"
+   2:User/Src/main.c **** #include "FreeRTOS.h"
+   3:User/Src/main.c **** #include "task.h"
+   4:User/Src/main.c **** 
+   5:User/Src/main.c **** static TaskHandle_t AppTaskCreate_Handle;
+   6:User/Src/main.c **** static TaskHandle_t LED_Task_Handle;
+   7:User/Src/main.c **** 
+   8:User/Src/main.c **** static void AppTaskCreate(void *prg);
+   9:User/Src/main.c **** static void LED_Task(void *prg);
+  10:User/Src/main.c **** 
+  11:User/Src/main.c **** int main()
+  12:User/Src/main.c **** {
+  13:User/Src/main.c ****     BaseType_t xReturn = pdPASS;
+  14:User/Src/main.c **** 
+  15:User/Src/main.c ****     System_Init();
+  16:User/Src/main.c ****     xReturn = xTaskCreate(AppTaskCreate, "AppTaskCreate", 128, NULL, 1, AppTaskCreate_Handle);
+  17:User/Src/main.c ****     if(xReturn == pdPASS)
+  18:User/Src/main.c ****         vTaskStartScheduler();
+  19:User/Src/main.c ****     else
+  20:User/Src/main.c ****         return -1;
+  21:User/Src/main.c ****     while(1)
+  22:User/Src/main.c ****     {
+  23:User/Src/main.c ****         /* EMPTY */
+  24:User/Src/main.c ****     }
+  25:User/Src/main.c **** }
+  26:User/Src/main.c **** 
+ARM GAS  C:\Users\nine\AppData\Local\Temp\ccG97wgm.s 			page 2
+
+
+  27:User/Src/main.c **** static void AppTaskCreate(void *prg)
+  28:User/Src/main.c **** {
+  31              		.loc 1 28 1 view -0
+  32              		.cfi_startproc
+  33              		@ args = 0, pretend = 0, frame = 0
+  34              		@ frame_needed = 0, uses_anonymous_args = 0
+  35              		.loc 1 28 1 is_stmt 0 view .LVU1
+  36 0000 10B5     		push	{r4, lr}
+  37              	.LCFI0:
+  38              		.cfi_def_cfa_offset 8
+  39              		.cfi_offset 4, -8
+  40              		.cfi_offset 14, -4
+  41 0002 82B0     		sub	sp, sp, #8
+  42              	.LCFI1:
+  43              		.cfi_def_cfa_offset 16
+  29:User/Src/main.c ****     BaseType_t xReturn = pdPASS;
+  44              		.loc 1 29 5 is_stmt 1 view .LVU2
+  45              	.LVL1:
+  30:User/Src/main.c **** 
+  31:User/Src/main.c ****     taskENTER_CRITICAL();
+  46              		.loc 1 31 5 view .LVU3
+  47 0004 FFF7FEFF 		bl	vPortEnterCritical
+  48              	.LVL2:
+  32:User/Src/main.c ****     xReturn = xTaskCreate(LED_Task, "LED_Task", 128, NULL, 2, LED_Task_Handle);
+  49              		.loc 1 32 5 view .LVU4
+  50              		.loc 1 32 15 is_stmt 0 view .LVU5
+  51 0008 0024     		movs	r4, #0
+  52 000a 0194     		str	r4, [sp, #4]
+  53 000c 0223     		movs	r3, #2
+  54 000e 0093     		str	r3, [sp]
+  55 0010 2346     		mov	r3, r4
+  56 0012 8022     		movs	r2, #128
+  57 0014 0549     		ldr	r1, .L3
+  58 0016 0648     		ldr	r0, .L3+4
+  59 0018 FFF7FEFF 		bl	xTaskCreate
+  60              	.LVL3:
+  33:User/Src/main.c ****     if(xReturn == pdPASS)
+  61              		.loc 1 33 5 is_stmt 1 view .LVU6
+  34:User/Src/main.c ****     {
+  35:User/Src/main.c **** 
+  36:User/Src/main.c ****     }
+  62              		.loc 1 36 5 view .LVU7
+  37:User/Src/main.c ****     vTaskDelete(AppTaskCreate_Handle);
+  63              		.loc 1 37 5 view .LVU8
+  64 001c 2046     		mov	r0, r4
+  65 001e FFF7FEFF 		bl	vTaskDelete
+  66              	.LVL4:
+  38:User/Src/main.c ****     taskEXIT_CRITICAL();
+  67              		.loc 1 38 5 view .LVU9
+  68 0022 FFF7FEFF 		bl	vPortExitCritical
+  69              	.LVL5:
+  39:User/Src/main.c **** }
+  70              		.loc 1 39 1 is_stmt 0 view .LVU10
+  71 0026 02B0     		add	sp, sp, #8
+  72              	.LCFI2:
+  73              		.cfi_def_cfa_offset 8
+  74              		@ sp needed
+ARM GAS  C:\Users\nine\AppData\Local\Temp\ccG97wgm.s 			page 3
+
+
+  75 0028 10BD     		pop	{r4, pc}
+  76              	.L4:
+  77 002a 00BF     		.align	2
+  78              	.L3:
+  79 002c 00000000 		.word	.LC0
+  80 0030 00000000 		.word	LED_Task
+  81              		.cfi_endproc
+  82              	.LFE35:
+  84              		.section	.text.LED_Task,"ax",%progbits
+  85              		.align	1
+  86              		.syntax unified
+  87              		.thumb
+  88              		.thumb_func
+  90              	LED_Task:
+  91              	.LFB36:
+  40:User/Src/main.c **** 
+  41:User/Src/main.c **** static void LED_Task(void *prg)
+  42:User/Src/main.c **** {
+  92              		.loc 1 42 1 is_stmt 1 view -0
+  93              		.cfi_startproc
+  94              		@ Volatile: function does not return.
+  95              		@ args = 0, pretend = 0, frame = 0
+  96              		@ frame_needed = 0, uses_anonymous_args = 0
+  97              	.LVL6:
+  98              		.loc 1 42 1 is_stmt 0 view .LVU12
+  99 0000 08B5     		push	{r3, lr}
+ 100              	.LCFI3:
+ 101              		.cfi_def_cfa_offset 8
+ 102              		.cfi_offset 3, -8
+ 103              		.cfi_offset 14, -4
+ 104              	.LVL7:
+ 105              	.L6:
+  43:User/Src/main.c ****     while(1)
+ 106              		.loc 1 43 5 is_stmt 1 discriminator 1 view .LVU13
+  44:User/Src/main.c ****     {
+  45:User/Src/main.c ****         LED_Toggle();
+ 107              		.loc 1 45 9 discriminator 1 view .LVU14
+ 108 0002 FFF7FEFF 		bl	LED_Toggle
+ 109              	.LVL8:
+  46:User/Src/main.c ****         vTaskDelay(1000);
+ 110              		.loc 1 46 9 discriminator 1 view .LVU15
+ 111 0006 4FF47A70 		mov	r0, #1000
+ 112 000a FFF7FEFF 		bl	vTaskDelay
+ 113              	.LVL9:
+  43:User/Src/main.c ****     while(1)
+ 114              		.loc 1 43 10 discriminator 1 view .LVU16
+ 115 000e F8E7     		b	.L6
+ 116              		.cfi_endproc
+ 117              	.LFE36:
+ 119              		.section	.text.System_Init,"ax",%progbits
+ 120              		.align	1
+ 121              		.global	System_Init
+ 122              		.syntax unified
+ 123              		.thumb
+ 124              		.thumb_func
+ 126              	System_Init:
+ 127              	.LFB37:
+ARM GAS  C:\Users\nine\AppData\Local\Temp\ccG97wgm.s 			page 4
+
+
+  47:User/Src/main.c ****     }
+  48:User/Src/main.c **** }
+  49:User/Src/main.c **** 
+  50:User/Src/main.c **** void System_Init(void)
+  51:User/Src/main.c **** {
+ 128              		.loc 1 51 1 view -0
+ 129              		.cfi_startproc
+ 130              		@ args = 0, pretend = 0, frame = 0
+ 131              		@ frame_needed = 0, uses_anonymous_args = 0
+ 132 0000 08B5     		push	{r3, lr}
+ 133              	.LCFI4:
+ 134              		.cfi_def_cfa_offset 8
+ 135              		.cfi_offset 3, -8
+ 136              		.cfi_offset 14, -4
+  52:User/Src/main.c ****     NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);
+ 137              		.loc 1 52 5 view .LVU18
+ 138 0002 4FF44070 		mov	r0, #768
+ 139 0006 FFF7FEFF 		bl	NVIC_PriorityGroupConfig
+ 140              	.LVL10:
+  53:User/Src/main.c ****     LED_Init();
+ 141              		.loc 1 53 5 view .LVU19
+ 142 000a FFF7FEFF 		bl	LED_Init
+ 143              	.LVL11:
+  54:User/Src/main.c **** }
+ 144              		.loc 1 54 1 is_stmt 0 view .LVU20
+ 145 000e 08BD     		pop	{r3, pc}
+ 146              		.cfi_endproc
+ 147              	.LFE37:
+ 149              		.section	.rodata.main.str1.4,"aMS",%progbits,1
+ 150              		.align	2
+ 151              	.LC1:
+ 152 0000 41707054 		.ascii	"AppTaskCreate\000"
+ 152      61736B43 
+ 152      72656174 
+ 152      6500
+ 153              		.section	.text.main,"ax",%progbits
+ 154              		.align	1
+ 155              		.global	main
+ 156              		.syntax unified
+ 157              		.thumb
+ 158              		.thumb_func
+ 160              	main:
+ 161              	.LFB34:
+  12:User/Src/main.c ****     BaseType_t xReturn = pdPASS;
+ 162              		.loc 1 12 1 is_stmt 1 view -0
+ 163              		.cfi_startproc
+ 164              		@ args = 0, pretend = 0, frame = 0
+ 165              		@ frame_needed = 0, uses_anonymous_args = 0
+ 166 0000 00B5     		push	{lr}
+ 167              	.LCFI5:
+ 168              		.cfi_def_cfa_offset 4
+ 169              		.cfi_offset 14, -4
+ 170 0002 83B0     		sub	sp, sp, #12
+ 171              	.LCFI6:
+ 172              		.cfi_def_cfa_offset 16
+  13:User/Src/main.c **** 
+ 173              		.loc 1 13 5 view .LVU22
+ARM GAS  C:\Users\nine\AppData\Local\Temp\ccG97wgm.s 			page 5
+
+
+ 174              	.LVL12:
+  15:User/Src/main.c ****     xReturn = xTaskCreate(AppTaskCreate, "AppTaskCreate", 128, NULL, 1, AppTaskCreate_Handle);
+ 175              		.loc 1 15 5 view .LVU23
+ 176 0004 FFF7FEFF 		bl	System_Init
+ 177              	.LVL13:
+  16:User/Src/main.c ****     if(xReturn == pdPASS)
+ 178              		.loc 1 16 5 view .LVU24
+  16:User/Src/main.c ****     if(xReturn == pdPASS)
+ 179              		.loc 1 16 15 is_stmt 0 view .LVU25
+ 180 0008 0023     		movs	r3, #0
+ 181 000a 0193     		str	r3, [sp, #4]
+ 182 000c 0122     		movs	r2, #1
+ 183 000e 0092     		str	r2, [sp]
+ 184 0010 8022     		movs	r2, #128
+ 185 0012 0749     		ldr	r1, .L16
+ 186 0014 0748     		ldr	r0, .L16+4
+ 187 0016 FFF7FEFF 		bl	xTaskCreate
+ 188              	.LVL14:
+  17:User/Src/main.c ****         vTaskStartScheduler();
+ 189              		.loc 1 17 5 is_stmt 1 view .LVU26
+  17:User/Src/main.c ****         vTaskStartScheduler();
+ 190              		.loc 1 17 7 is_stmt 0 view .LVU27
+ 191 001a 0128     		cmp	r0, #1
+ 192 001c 04D0     		beq	.L15
+  25:User/Src/main.c **** 
+ 193              		.loc 1 25 1 view .LVU28
+ 194 001e 4FF0FF30 		mov	r0, #-1
+ 195              	.LVL15:
+  25:User/Src/main.c **** 
+ 196              		.loc 1 25 1 view .LVU29
+ 197 0022 03B0     		add	sp, sp, #12
+ 198              	.LCFI7:
+ 199              		.cfi_remember_state
+ 200              		.cfi_def_cfa_offset 4
+ 201              		@ sp needed
+ 202 0024 5DF804FB 		ldr	pc, [sp], #4
+ 203              	.LVL16:
+ 204              	.L15:
+ 205              	.LCFI8:
+ 206              		.cfi_restore_state
+  18:User/Src/main.c ****     else
+ 207              		.loc 1 18 9 is_stmt 1 view .LVU30
+ 208 0028 FFF7FEFF 		bl	vTaskStartScheduler
+ 209              	.LVL17:
+ 210              	.L12:
+  21:User/Src/main.c ****     {
+ 211              		.loc 1 21 5 discriminator 1 view .LVU31
+  24:User/Src/main.c **** }
+ 212              		.loc 1 24 5 discriminator 1 view .LVU32
+  21:User/Src/main.c ****     {
+ 213              		.loc 1 21 10 discriminator 1 view .LVU33
+ 214 002c FEE7     		b	.L12
+ 215              	.L17:
+ 216 002e 00BF     		.align	2
+ 217              	.L16:
+ 218 0030 00000000 		.word	.LC1
+ 219 0034 00000000 		.word	AppTaskCreate
+ARM GAS  C:\Users\nine\AppData\Local\Temp\ccG97wgm.s 			page 6
+
+
+ 220              		.cfi_endproc
+ 221              	.LFE34:
+ 223              		.text
+ 224              	.Letext0:
+ 225              		.file 2 "e:\\programdata\\gnu arm embedded toolchain\\arm-none-eabi\\include\\machine\\_default_ty
+ 226              		.file 3 "e:\\programdata\\gnu arm embedded toolchain\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 227              		.file 4 "FreeRTOS/portable/ARM_CM3/portmacro.h"
+ 228              		.file 5 "FreeRTOS/include/task.h"
+ 229              		.file 6 "Drivers/STM32F10x_StdPeriph_Driver/Include/misc.h"
+ 230              		.file 7 "Hardware/LED/Inc/led.h"
+ARM GAS  C:\Users\nine\AppData\Local\Temp\ccG97wgm.s 			page 7
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+C:\Users\nine\AppData\Local\Temp\ccG97wgm.s:18     .rodata.AppTaskCreate.str1.4:00000000 $d
+C:\Users\nine\AppData\Local\Temp\ccG97wgm.s:22     .text.AppTaskCreate:00000000 $t
+C:\Users\nine\AppData\Local\Temp\ccG97wgm.s:27     .text.AppTaskCreate:00000000 AppTaskCreate
+C:\Users\nine\AppData\Local\Temp\ccG97wgm.s:79     .text.AppTaskCreate:0000002c $d
+C:\Users\nine\AppData\Local\Temp\ccG97wgm.s:90     .text.LED_Task:00000000 LED_Task
+C:\Users\nine\AppData\Local\Temp\ccG97wgm.s:85     .text.LED_Task:00000000 $t
+C:\Users\nine\AppData\Local\Temp\ccG97wgm.s:120    .text.System_Init:00000000 $t
+C:\Users\nine\AppData\Local\Temp\ccG97wgm.s:126    .text.System_Init:00000000 System_Init
+C:\Users\nine\AppData\Local\Temp\ccG97wgm.s:150    .rodata.main.str1.4:00000000 $d
+C:\Users\nine\AppData\Local\Temp\ccG97wgm.s:154    .text.main:00000000 $t
+C:\Users\nine\AppData\Local\Temp\ccG97wgm.s:160    .text.main:00000000 main
+C:\Users\nine\AppData\Local\Temp\ccG97wgm.s:218    .text.main:00000030 $d
+
+UNDEFINED SYMBOLS
+vPortEnterCritical
+xTaskCreate
+vTaskDelete
+vPortExitCritical
+LED_Toggle
+vTaskDelay
+NVIC_PriorityGroupConfig
+LED_Init
+vTaskStartScheduler
