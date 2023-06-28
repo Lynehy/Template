@@ -1,0 +1,27 @@
+{
+    "configurations": [
+        {
+            "name": "STM32",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/Drivers/CMSIS/Include",
+                "${workspaceFolder}/Drivers/STM32F4xx_DSP_StdPeriph_Driver/Include",
+                "${workspaceFolder}/FreeRTOS/include",
+                "${workspaceFolder}/FreeRTOS/portable/GCC/ARM_CM4F",
+                "${workspaceFolder}/User/Inc",
+                "${workspaceFolder}/Bsp/Inc"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE",
+                "USE_STDPERIPH_DRIVER",
+                "STM32F40_41xxx"
+            ],
+            "compilerPath": "E:/ProgramData/ArmToolchain/bin/arm-none-eabi-gcc.exe",
+            "cStandard": "c99",
+            "cppStandard": "c++11"
+        }
+    ],
+    "version": 4
+}
